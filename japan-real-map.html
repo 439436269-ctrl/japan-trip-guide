@@ -154,7 +154,7 @@
 <div id="hd"><div class="box">
   <h1 class="serif">日本 <em>·</em> 真实地图速览</h1>
   <div class="sub">真实的海岸线、地形与地名，三分钟认识每个地方</div>
-  <div class="hint">拖动平移 · Ctrl+拖动旋转俯仰 · 滚轮缩放 · 点击色块选地区</div>
+  <div class="hint">拖动平移 · 滚轮缩放 · 点击色块选地区<br><span style="color:#8A5A1E">●琥珀点 = 推荐吃处（不在动线内）</span></div>
   <div class="rule"></div>
   <div class="glinks">
     <a href="japan-guide.html#food" target="_blank">吃 · 24 种图鉴</a>
@@ -233,6 +233,9 @@ const PINS = [
  {d:'D8',s:'宇治·奈良',dt:'12/26',n:'宇治·奈良',lon:135.84,lat:34.683,off:[0.55,0.3]},
  {d:'D9',s:'临空城',dt:'12/27',n:'临空城奥莱·返程',lon:135.293,lat:34.395,off:[0.5,0.6]}
 ];
+
+/* 推荐吃处（不参与动线，仅标记） */
+const FOODPINS=[{"n":"たこ梅·关东煮","d":"D1","lon":135.5006,"lat":34.6649,"note":"难波 180 年老铺，鲸鱼料理也有"},{"n":"金龙拉面","d":"D1","lon":135.5031,"lat":34.6701,"note":"道顿堀 24 小时，酱油系"},{"n":"くくる 章鱼烧","d":"D4","lon":135.5004,"lat":34.6694,"note":"道顿堀本店，可取预约券"},{"n":"千房 大阪烧","d":"D4","lon":135.4994,"lat":34.6692,"note":"铁板现煎，楼层大适合组队"},{"n":"だるま 串炸","d":"D4","lon":135.5069,"lat":34.6527,"note":"新世界元祖，酱只能蘸一次"},{"n":"蟹道乐 本店","d":"D4","lon":135.5017,"lat":34.6713,"note":"午市比晚市便宜三成"},{"n":"551蓬莱 难波","d":"D4","lon":135.4996,"lat":34.6632,"note":"猪肉包，机场有冷冻版"},{"n":"Steak Land 三宫","d":"D3","lon":135.1933,"lat":34.6926,"note":"神户牛午市套餐 3000 円起"},{"n":"モーリヤ 三宫","d":"D3","lon":135.191,"lat":34.6907,"note":"A5 正席，需提前订"},{"n":"犇屋 神户站前","d":"D3","lon":135.1787,"lat":34.6795,"note":"黑毛和牛烤肉，无需预约可 walk in"},{"n":"にしむら珈琲 北野店","d":"D3","lon":135.1876,"lat":34.6989,"note":"神户老牌喫茶，异人馆旁"},{"n":"老祥记 南京町","d":"D3","lon":135.1869,"lat":34.6867,"note":"猪肉包元祖，1915 年创业"},{"n":"駅弁屋 祭","d":"D5","lon":135.4953,"lat":34.7024,"note":"大阪站内，几十种駅弁可选"},{"n":"京都拉面小路","d":"D5","lon":135.7618,"lat":34.9858,"note":"京都站 10F，全国名店集合"},{"n":"奥丹清水","d":"D6","lon":135.7808,"lat":34.9968,"note":"只做汤豆腐一百年，有庭院座"},{"n":"廣川 岚山","d":"D7","lon":135.6722,"lat":35.0096,"note":"鳗鱼饭，米其林一星，要预约"},{"n":"中村藤吉 宇治","d":"D8","lon":135.8076,"lat":34.8858,"note":"生茶果冻必点"},{"n":"志津香 奈良","d":"D8","lon":135.8407,"lat":34.6849,"note":"釜饭，开门取号"},{"n":"平宗 奈良町","d":"D8","lon":135.8257,"lat":34.6797,"note":"柿叶寿司老铺"}];
 
 /* 每日逐站动线 */
 const DAYSTOPS={
@@ -424,6 +427,21 @@ map.on('style.load',()=>{
     layout:{'text-field':['get','n'],'text-font':['Noto Sans Bold'],'text-size':11.5,
             'text-anchor':'left','text-offset':[0.8,0],'text-allow-overlap':false},
     paint:{'text-color':'#2A2620','text-halo-color':'rgba(255,253,248,.95)','text-halo-width':2.2}},'place-labels');
+
+  map.addSource('foodpins',{type:'geojson',data:{type:'FeatureCollection',features:FOODPINS.map(f=>({
+    type:'Feature',properties:{n:f.n,t:f.d+' · '+f.n,note:f.note},geometry:{type:'Point',coordinates:[f.lon,f.lat]}}))}});
+  map.addLayer({id:'food-dot',type:'circle',source:'foodpins',
+    paint:{'circle-radius':5.5,'circle-color':'#C98A3C','circle-stroke-color':'#FFFDF8','circle-stroke-width':1.6,'circle-opacity':.95}},'place-labels');
+  map.addLayer({id:'food-label',type:'symbol',source:'foodpins',minzoom:7,
+    layout:{'text-field':['get','t'],'text-font':['Noto Sans Bold'],'text-size':10.5,
+            'text-anchor':'left','text-offset':[0.7,0],'text-allow-overlap':false},
+    paint:{'text-color':'#8A5A1E','text-halo-color':'rgba(255,253,248,.95)','text-halo-width':2}}, 'place-labels');
+  map.on('click','food-dot',e=>{
+    const f=e.features[0];
+    showStopPopup(f.geometry.coordinates[0],f.geometry.coordinates[1],f.properties.n,f.properties.note);
+  });
+  map.on('mousemove','food-dot',()=>map.getCanvas().style.cursor='pointer');
+  map.on('mouseleave','food-dot',()=>map.getCanvas().style.cursor='');
   map.addSource('daylinks',{type:'geojson',data:{type:'Feature',properties:{},geometry:{type:'MultiLineString',coordinates:[]}}});
   map.addLayer({id:'daylinks-line',type:'line',source:'daylinks',
     paint:{'line-color':'#C2402F','line-width':1.6,'line-dasharray':[0.5,2],'line-opacity':.55}},'daystop-halo');
@@ -434,7 +452,7 @@ map.on('style.load',()=>{
   map.on('mousemove','daystop-halo',()=>map.getCanvas().style.cursor='pointer');
   map.on('mouseleave','daystop-halo',()=>map.getCanvas().style.cursor='');
 
-  ['route-line','pin-dots','pin-labels','pin-labels-mid','pin-labels-kyoto','dayroute-line','daystop-halo','daystop-num'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
+  ['route-line','pin-dots','pin-labels','pin-labels-mid','pin-labels-kyoto','dayroute-line','daystop-halo','daystop-num','food-dot','food-label'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
 
   function nearestPin(pt){
     const R=14;
@@ -613,7 +631,7 @@ function deselect(){
 function setItin(v,opts={}){
   state.itin=v;
   swEl.classList.toggle('on',v);
-  if(state.ready)['route-line','pin-dots','pin-labels','pin-labels-mid','pin-labels-kyoto'].forEach(l=>map.setLayoutProperty(l,'visibility',v?'visible':'none'));
+  if(state.ready)['route-line','pin-dots','pin-labels','pin-labels-mid','pin-labels-kyoto','food-dot','food-label'].forEach(l=>map.setLayoutProperty(l,'visibility',v?'visible':'none'));
   daychipsEl.classList.toggle('show',v);
   if(v){ if(!opts.silent){ if(state.sel==='kansai')card.classList.add('istrip'); else if(state.sel||state.ready)select('kansai'); } }
   else{
