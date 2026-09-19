@@ -139,7 +139,7 @@
 
 <main>
   <section id="tab-prep">
-    <div class="intro">出发前的 <b>17 件事</b>，按时间线排好：提前 1 个月办证件订大件 → 2 周前搞定预约和网络 → 3 天前换现金装 APP → 当天只管护照和充电宝。做完一件<b>点左上角圆圈盖章</b>——100 件全部盖满，就是一场准备充分的旅行。</div>
+    <div class="intro">出发前的 <b>17 件事</b>，按时间线排好：提前 1 个月办证件订大件 → 2 周前搞定预约和网络 → 3 天前换现金装 APP → 当天只管护照和充电宝。做完一件<b>点左上角圆圈盖章</b>——全部盖满，就是一场准备充分的旅行。</div>
     <div class="grid" id="grid-prep"></div>
   </section>
   <section id="tab-food">
@@ -159,7 +159,7 @@
     <div class="grid" id="grid-buy"></div>
   </section>
   <section id="tab-otaku" hidden>
-    <div class="intro">为二次元准备的<b>「圣地巡礼」清单</b>：大阪日本桥是关西的秋叶原，梅田三个商场能买遍任天堂/宝可梦/chiikawa，京都的鸭川三角洲和宇治则是《声之形》《吹响吧！上低音号》的取景地。每处都标了<b>对应你哪天经过</b>。</div>
+    <div class="intro">为二次元准备的<b>「圣地巡礼」清单</b>（含动漫取景地与夜景/温泉等必去点）：大阪日本桥是关西的秋叶原，梅田三个商场能买遍任天堂/宝可梦/chiikawa，京都的鸭川三角洲和宇治则是《声之形》《吹响吧！上低音号》的取景地。每处都标了<b>对应你哪天经过</b>。</div>
     <div class="grid" id="grid-otaku"></div>
   </section>
   <section id="tab-festival" hidden>
@@ -416,8 +416,14 @@ const OTAKU=[
   what:'小学校改造的博物馆，5 万册漫画墙可以躺着看；常设展讲漫画史，中国漫画也有专区。',
   tip:'周三休馆；「机动日」天气不好时的最佳室内选项。'},
  {n:'任天堂园区',jp:'スーパーニンテンドーワールド',k:'s_usj',type:'圣地 · 主题乐园',days:'D2 · USJ',where:'马里奥+咚奇刚新园区',price:'含门票 · 快通另购',
-  what:'真实尺度的蘑菇王国： coherent 能量手环收集金币，KEY 挑战刷全场。',
-  tip:'入园直奔马里奥赛道；手环现场买或提前官方渠道购。'}
+  what:'真实尺度的蘑菇王国：戴着能量手环收集金币，KEY 挑战刷全场。',
+  tip:'入园直奔马里奥赛道；手环现场买或提前官方渠道购。'},
+ {n:'有马温泉',jp:'有馬温泉',k:'s_arima',type:'温泉 · 日本三古泉',days:'D3 · 神户备选半日',where:'神户·有马町',price:'日归 800–2,900 円',
+  what:'太閤秀吉爱用的关西奥座敷，两种泉质同场：褐色「金泉」含铁盐保温强、无色「银泉」是碳酸/镭泉。三宫出发约 35–45 分钟。',
+  tip:'省钱选公共浴场「金の湯」约 800 円；想穿浴衣逛汤街选「太閤の湯」约 2,900 円。多禁纹身或需遮盖贴。'},
+ {n:'摩耶山掬星台',jp:'摩耶山 掬星台',k:'s_maya',type:'夜景 · 日本三大夜景',days:'D3 · 夜景备选',where:'神户·摩耶山',price:'缆车往返约 1,560 円',
+  what:'缆车+索道直上山腰，海拔 700 米的掬星台一次收下「千万美元夜景」：神户—大阪—和歌山一线灯海。',
+  tip:'运行 10:00–21:00（末班约 20:50）；市营巴士 18 系统到缆车站，山顶比市区低 3–5°C，务必穿厚。'}
 ];
 
 const FEST=[
@@ -590,7 +596,7 @@ const img=GIMG[e.k]?`<img src="${GIMG[e.k]}" loading="lazy" alt="${e.n}">`
     <div class="cname">${e.n}<span class="cjp">${e.jp}</span></div>
     ${e.type?`<div style="margin-top:9px"><span class="ctype">${e.type}</span></div>`:''}
     <div class="cwhat">${e.what}</div>
-    <div class="cmeta">价位 <b>${e.price}</b> · ${e.days.includes('·')?e.days.split(' · ').slice(1).join(' · '):e.days}</div>
+    ${e.price?`<div class="cmeta">价位 <b>${e.price}</b> · ${e.days.includes('·')?e.days.split(' · ').slice(1).join(' · '):e.days}</div>`:e.meta?`<div class="cmeta">${e.meta}</div>`:''}
     <div class="ctip">${e.tip}</div>
     ${shopsHtml(e)}
     ${posLink(e)}
