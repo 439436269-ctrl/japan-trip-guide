@@ -38,10 +38,13 @@
   #hd .hint{margin-top:4px;font-size:11px;color:#A79C87}
   #hd .rule{width:44px;height:2px;background:var(--accent);margin-top:10px}
   #hd .glinks{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
-  #hd .glinks a{font-size:11px;color:var(--accent);text-decoration:none;
+  #hd .glinks a{pointer-events:auto;font-size:11px;color:var(--accent);text-decoration:none;
     border:1px solid rgba(194,64,47,.35);border-radius:99px;padding:3px 10px;
     background:rgba(255,253,248,.9);transition:all .15s}
   #hd .glinks a:hover{background:var(--accent);color:#FFF7EE}
+  #hd .tgl{pointer-events:auto;margin-top:8px;font-size:11px;font-family:inherit;color:#5C5344;cursor:pointer;
+    background:rgba(255,253,248,.9);border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+  #hd .tgl.off{color:#A79C87;text-decoration:line-through}
 
   /* ---------- 右侧信息卡 ---------- */
   #card{position:absolute;top:76px;right:26px;z-index:11;width:312px;
@@ -175,6 +178,7 @@
   <div class="sub">真实的海岸线、地形与地名，三分钟认识每个地方</div>
   <div class="hint">拖动平移 · 滚轮缩放 · 点击色块选地区<br><span style="color:#8A5A1E">●琥珀点 = 推荐吃处（不在动线内）</span></div>
   <div class="rule"></div>
+  <button id="btn3d" class="tgl">3D 地形：开</button>
   <div class="glinks">
     <a href="japan-guide.html#food" target="_blank">吃 · 24 种图鉴</a>
     <a href="japan-guide.html#arch" target="_blank">建筑 · 13 类</a>
@@ -327,7 +331,7 @@ setTimeout(markReady,3500);
 const swEl = document.getElementById('sw');
 
 const map = new maplibregl.Map({
-  container:'map', maxPitch:70,
+  container:'map', maxPitch:70, renderWorldCopies:false, prefetchZoomDelta:0,
   center:[136.2,36.4], zoom:4.7, pitch:36, bearing:-12,
   style:{
     version:8,
@@ -344,9 +348,6 @@ const map = new maplibregl.Map({
         paint:{'fill-color':'#DFE5D3','fill-opacity':.5}},
       {id:'water',type:'fill',source:'ofm','source-layer':'water',
         paint:{'fill-color':'#BFD5E2'}},
-      {id:'hillshade',type:'hillshade',source:'dem',
-        paint:{'hillshade-shadow-color':'#4E5A52','hillshade-highlight-color':'#FFFDF6',
-               'hillshade-accent-color':'#6B6F62','hillshade-exaggeration':.32}},
       {id:'roads',type:'line',source:'ofm','source-layer':'transportation',minzoom:5,
         filter:['in',['get','class'],['literal',['motorway','trunk','primary']]],
         paint:{'line-color':'#E8DFCA','line-width':['interpolate',['linear'],['zoom'],5,.4,9,1.4,13,2.6]}},
@@ -370,6 +371,12 @@ const map = new maplibregl.Map({
     ]
   }
 });
+let terrain3d = localStorage.getItem('jp-terrain') !== '0';
+function applyTerrain(){
+  try{ if(terrain3d) map.setTerrain({source:'dem',exaggeration:1.3}); else map.setTerrain(null); }catch(e){}
+  const b=document.getElementById('btn3d');
+  if(b){ b.textContent = terrain3d ? '3D 地形：开' : '3D 地形：关'; b.classList.toggle('off', !terrain3d); }
+}
 window.__map = map;
 
 /* 比例尺：公制，随缩放自动换算 */
@@ -504,7 +511,7 @@ map.on('style.load',()=>{
 
   markReady();
 
-  map.on('load',()=>{ try{map.setTerrain({source:'dem',exaggeration:1.3});}catch(e){} markReady(); });
+  map.on('load',()=>{ applyTerrain(); markReady(); });
 
   if(state.pendingSel){ const pd=state.pendingSel; state.pendingSel=null; setTimeout(()=>select(pd),50); }
 
@@ -723,6 +730,11 @@ function updateDayChips(){
   daychipsEl.querySelectorAll('.dchip').forEach(c=>c.classList.toggle('on',c.dataset.d===dayOpen));
 }
 swEl.addEventListener('click',()=>setItin(!state.itin));
+document.getElementById('btn3d').addEventListener('click',()=>{
+  terrain3d = !terrain3d;
+  localStorage.setItem('jp-terrain', terrain3d ? '1' : '0');
+  applyTerrain();
+});
 document.getElementById('cardX').addEventListener('click',()=>{
   if(foodOpen){
     hideFoodCard();
