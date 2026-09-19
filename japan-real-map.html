@@ -80,25 +80,25 @@
   #card.food #foodBody{display:block}
   .minibtn{font-size:11.5px;color:var(--accent);background:rgba(255,253,248,.95);border:1px solid rgba(194,64,47,.4);border-radius:99px;padding:5px 12px;cursor:pointer}
   .minibtn:hover{background:var(--accent);color:#FFF7EE}
-  #dayBody .imgs{display:flex;gap:8px;margin:10px 0 4px}
-  #dayBody .imgs img{width:50%;height:112px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
-  #dayBody .imgs img:only-child{width:100%;height:150px}
-  #dayBody .sec{margin-top:13px}
-  #dayBody .sec-t{font-size:11px;color:var(--accent);letter-spacing:.18em;margin-bottom:6px;font-weight:600}
-  #dayBody .sec ul{list-style:none}
-  #dayBody .sec li{font-size:12px;color:#4E463A;line-height:1.75;padding-left:12px;position:relative}
-  #dayBody .sec li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700}
-  #dayBody .lnks{margin-top:6px;display:flex;flex-direction:column;gap:5px}
-  #dayBody .lnks a{font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(194,64,47,.4);width:fit-content;line-height:1.5}
-  #dayBody .lnks a:hover{border-bottom-style:solid}
-  #dayBody .stops{list-style:none;margin:2px 0 0;padding:0}
-  #dayBody .stops li{padding:6px 4px 6px 26px;position:relative;border-bottom:1px dashed #EEE5D3;cursor:pointer}
-  #dayBody .stops li:hover{background:#F7F1E4}
-  #dayBody .stops li::before{content:attr(data-n);position:absolute;left:2px;top:8px;width:17px;height:17px;
+  #dayBody .,#foodBody .imgs{display:flex;gap:8px;margin:10px 0 4px}
+  #dayBody .,#foodBody .imgs img{width:50%;height:112px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+  #dayBody .,#foodBody .imgs img:only-child{width:100%;height:150px}
+  #dayBody .,#foodBody .sec{margin-top:13px}
+  #dayBody .,#foodBody .sec-t{font-size:11px;color:var(--accent);letter-spacing:.18em;margin-bottom:6px;font-weight:600}
+  #dayBody .,#foodBody .sec ul{list-style:none}
+  #dayBody .,#foodBody .sec li{font-size:12px;color:#4E463A;line-height:1.75;padding-left:12px;position:relative}
+  #dayBody .,#foodBody .sec li::before{content:'·';position:absolute;left:0;color:var(--accent);font-weight:700}
+  #dayBody .,#foodBody .lnks{margin-top:6px;display:flex;flex-direction:column;gap:5px}
+  #dayBody .,#foodBody .lnks a{font-size:12px;color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(194,64,47,.4);width:fit-content;line-height:1.5}
+  #dayBody .,#foodBody .lnks a:hover{border-bottom-style:solid}
+  #dayBody .,#foodBody .stops{list-style:none;margin:2px 0 0;padding:0}
+  #dayBody .,#foodBody .stops li{padding:6px 4px 6px 26px;position:relative;border-bottom:1px dashed #EEE5D3;cursor:pointer}
+  #dayBody .,#foodBody .stops li:hover{background:#F7F1E4}
+  #dayBody .,#foodBody .stops li::before{content:attr(data-n);position:absolute;left:2px;top:8px;width:17px;height:17px;
     border-radius:50%;background:var(--accent);color:#FFF7EE;font-size:10px;font-weight:700;
     display:flex;align-items:center;justify-content:center}
-  #dayBody .stops li b{font-size:12px;color:var(--ink);font-weight:600;display:block}
-  #dayBody .stops li .snote{font-size:11px;color:#8A7F6C;display:block;margin-top:1px}
+  #dayBody .,#foodBody .stops li b{font-size:12px;color:var(--ink);font-weight:600;display:block}
+  #dayBody .,#foodBody .stops li .snote{font-size:11px;color:#8A7F6C;display:block;margin-top:1px}
 
   /* ---------- 左下地区按钮 ---------- */
   #chips{position:absolute;left:26px;bottom:24px;z-index:10;display:flex;flex-wrap:wrap;gap:7px;
@@ -152,6 +152,19 @@
     #card.open{transform:none}
     #chips{max-width:86vw;bottom:88px}
   }
+
+  /* 食物卡紧凑版：一屏可见 */
+  #foodBody .imgs{margin:8px 0 2px}
+  #foodBody .imgs img,#foodBody .imgs img:only-child{width:100%;height:118px;object-fit:cover;border-radius:10px}
+  #foodBody h2{font-size:24px}
+  #foodBody .desc{line-height:1.65;font-size:12px}
+  #foodBody .sec{margin-top:9px}
+  #foodBody .sec-t{margin-bottom:3px}
+  #foodBody .lnks{flex-direction:row;flex-wrap:wrap;gap:12px;margin-top:9px}
+  #foodBody .tag{margin-bottom:7px}
+  #foodBody .en{margin:3px 0 7px}
+  #foodBody .tg{margin-bottom:6px}
+  #card.food{max-height:calc(100vh - 96px);padding:18px 20px 16px}
 </style>
 </head>
 <body>
