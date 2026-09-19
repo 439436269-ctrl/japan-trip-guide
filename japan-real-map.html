@@ -74,6 +74,12 @@
   #dayBody{display:none}
   #card.day #regionBody{display:none}
   #card.day #dayBody{display:block}
+  #foodBody{display:none}
+  #card.food #regionBody{display:none}
+  #card.food #dayBody{display:none}
+  #card.food #foodBody{display:block}
+  .minibtn{font-size:11.5px;color:var(--accent);background:rgba(255,253,248,.95);border:1px solid rgba(194,64,47,.4);border-radius:99px;padding:5px 12px;cursor:pointer}
+  .minibtn:hover{background:var(--accent);color:#FFF7EE}
   #dayBody .imgs{display:flex;gap:8px;margin:10px 0 4px}
   #dayBody .imgs img{width:50%;height:112px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
   #dayBody .imgs img:only-child{width:100%;height:150px}
@@ -177,6 +183,7 @@
     <div class="tripnote">你的 12.19–12.27 关西行程已标注在地图上，点击红色图钉看每一天的衣食住行。</div>
   </div>
   <div id="dayBody"></div>
+  <div id="foodBody"></div>
 </div>
 
 <div id="chips"></div>
@@ -234,8 +241,10 @@ const PINS = [
  {d:'D9',s:'临空城',dt:'12/27',n:'临空城奥莱·返程',lon:135.293,lat:34.395,off:[0.5,0.6]}
 ];
 
-/* 推荐吃处（不参与动线，仅标记） */
-const FOODPINS=[{"n":"たこ梅·关东煮","d":"D1","lon":135.5006,"lat":34.6649,"note":"难波 180 年老铺，鲸鱼料理也有"},{"n":"金龙拉面","d":"D1","lon":135.5031,"lat":34.6701,"note":"道顿堀 24 小时，酱油系"},{"n":"くくる 章鱼烧","d":"D4","lon":135.5004,"lat":34.6694,"note":"道顿堀本店，可取预约券"},{"n":"千房 大阪烧","d":"D4","lon":135.4994,"lat":34.6692,"note":"铁板现煎，楼层大适合组队"},{"n":"だるま 串炸","d":"D4","lon":135.5069,"lat":34.6527,"note":"新世界元祖，酱只能蘸一次"},{"n":"蟹道乐 本店","d":"D4","lon":135.5017,"lat":34.6713,"note":"午市比晚市便宜三成"},{"n":"551蓬莱 难波","d":"D4","lon":135.4996,"lat":34.6632,"note":"猪肉包，机场有冷冻版"},{"n":"Steak Land 三宫","d":"D3","lon":135.1933,"lat":34.6926,"note":"神户牛午市套餐 3000 円起"},{"n":"モーリヤ 三宫","d":"D3","lon":135.191,"lat":34.6907,"note":"A5 正席，需提前订"},{"n":"犇屋 神户站前","d":"D3","lon":135.1787,"lat":34.6795,"note":"黑毛和牛烤肉，无需预约可 walk in"},{"n":"にしむら珈琲 北野店","d":"D3","lon":135.1876,"lat":34.6989,"note":"神户老牌喫茶，异人馆旁"},{"n":"老祥记 南京町","d":"D3","lon":135.1869,"lat":34.6867,"note":"猪肉包元祖，1915 年创业"},{"n":"駅弁屋 祭","d":"D5","lon":135.4953,"lat":34.7024,"note":"大阪站内，几十种駅弁可选"},{"n":"京都拉面小路","d":"D5","lon":135.7618,"lat":34.9858,"note":"京都站 10F，全国名店集合"},{"n":"奥丹清水","d":"D6","lon":135.7808,"lat":34.9968,"note":"只做汤豆腐一百年，有庭院座"},{"n":"廣川 岚山","d":"D7","lon":135.6722,"lat":35.0096,"note":"鳗鱼饭，米其林一星，要预约"},{"n":"中村藤吉 宇治","d":"D8","lon":135.8076,"lat":34.8858,"note":"生茶果冻必点"},{"n":"志津香 奈良","d":"D8","lon":135.8407,"lat":34.6849,"note":"釜饭，开门取号"},{"n":"平宗 奈良町","d":"D8","lon":135.8257,"lat":34.6797,"note":"柿叶寿司老铺"}];
+/* 推荐吃处（不参与动线，仅标记；含完整卡片资料） */
+const FOODPINS=[{"n":"たこ梅·关东煮","jp":"たこ梅","d":"D1","lon":135.5006,"lat":34.6649,"dish":"关东煮 · 老铺","img":"f_oden","intro":"1844 年创业的关东煮老铺，也是关西「鲸鱼料理」代表店。","why":"招牌：大根、牛筋、玉子、鲸肉刺身（少见但值得一试）。","price":"人均 2,000–3,500 円","tip":"晚市人多，落地夜早点去；在难波站与道顿堀之间。"},{"n":"金龙拉面","jp":"金龍ラーメン","d":"D1","lon":135.5031,"lat":34.6701,"dish":"拉面 · 24 小时","img":"f_ramen","intro":"道顿堀 24 小时营业的酱油拉面，门口龙柱是地标。","why":"招牌：叉烧拉面，汤头偏咸但很有大阪味。","price":"900–1,200 円","tip":"落地夜或深夜想吃口热的，这家最稳。"},{"n":"くくる 章鱼烧","jp":"たこ家道頓堀くくる","d":"D4","lon":135.5004,"lat":34.6694,"dish":"章鱼烧 · 名店","img":"f_takoyaki","intro":"道顿堀本店是「大章鱼」招牌的那家，常年在排队。","why":"招牌：明石烧风章鱼烧，内芯流心；可先取整理券逛别处。","price":"600–900 円/份","tip":"刚出炉很烫，别一口吞；晚 19 点后排队最久。"},{"n":"千房 大阪烧","jp":"お好み焼き 千房","d":"D4","lon":135.4994,"lat":34.6692,"dish":"大阪烧 · 铁板","img":"f_okonomiyaki","intro":"大阪烧连锁一哥，道顿堀本店楼层大、适合组队。","why":"招牌：豚玉、摩登烧（加了炒面）；店员会教你怎么翻。","price":"1,000–1,800 円","tip":"避开 12:00–13:00、18:00–20:00 高峰；-1 层有铁板表演。"},{"n":"だるま 串炸","jp":"串かつだるま","d":"D4","lon":135.5069,"lat":34.6527,"dish":"串炸 · 元祖","img":"f_kushikatsu","intro":"1929 年新世界创业的串炸元祖，招牌是「禁止二次蘸酱」。","why":"招牌：牛肉串、莲藕、大虾；面衣薄脆不油腻。","price":"120–250 円/串","tip":"酱缸是公用的，只能蘸一次；卷心菜丝免费可续。"},{"n":"蟹道乐 本店","jp":"かに道楽 道頓堀本店","d":"D4","lon":135.5017,"lat":34.6713,"dish":"蟹料理 · 会动的招牌","img":"f_crab","intro":"门口大螃蟹会动的那家本店，12 月正是雪蟹季。","why":"招牌：蟹六吃套餐（刺身/烤/涮/蒸/天妇罗/粥）。","price":"午市 3,500 起 · 晚市 6,000 起","tip":"午市比晚市便宜三成；本店需排队，可先取号逛道顿堀。"},{"n":"551蓬莱 难波","jp":"551 蓬莱 なんば本店","d":"D4","lon":135.4996,"lat":34.6632,"dish":"猪肉包 · 伴手礼","img":"f_butaman","intro":"关西限定「551」，猪肉包是本地人的硬通货。","why":"招牌：猪肉包（2 个 270 円）、烧卖；现蒸现卖。","price":"270 円/2 个","tip":"只有关西有，机场有冷冻版可带走；现蒸版趁热吃。"},{"n":"Steak Land 三宫","jp":"ステーキランド 三宮","d":"D3","lon":135.1933,"lat":34.6926,"dish":"神户牛 · 铁板","img":"f_kobebeef","intro":"神户牛午市套餐的「穷游传说」，铁板现煎。","why":"招牌：神户牛午市套餐（3,000–5,000 円），含汤沙拉。","price":"午市 3,000–5,000 円","tip":"午市性价比最高；饭点排队，建议 11:30 前到。"},{"n":"モーリヤ 三宫","jp":"神戸牛ステーキ モーリヤ","d":"D3","lon":135.191,"lat":34.6907,"dish":"神户牛 · A5 正席","img":"f_kobebeef","intro":"1885 年创业的神户牛专门店，正席铁板。","why":"招牌：A5 神户牛沙朗/菲力套餐，师傅当席煎。","price":"10,000–20,000 円","tip":"必须提前订（官网或电话，可请酒店代订）；午市相对便宜。"},{"n":"犇屋 神户站前","jp":"犇屋 神戸駅前店","d":"D3","lon":135.1787,"lat":34.6795,"dish":"烤肉 · walk in","img":"f_kobebeef","intro":"小红书笔记实测推荐：神户站前几步路的黑毛和牛烤肉。","why":"招牌：黑毛和牛烤肉拼盘；比三宫门店价位更合适。","price":"3,000–5,000 円","tip":"无需预约可直接 walk in；从奥莱回神户站出站即到。"},{"n":"にしむら珈琲 北野店","jp":"にしむら珈琲店 北野店","d":"D3","lon":135.1876,"lat":34.6989,"dish":"咖啡 · 老牌喫茶","img":"f_purin","intro":"神户老牌喫茶店，京都以西的「咖啡之城」代表。","why":"招牌：手冲/维也纳咖啡 + 布丁；北野异人馆逛累了正好坐下。","price":"800–1,500 円","tip":"三宫站前也有一家（笔记里早餐套餐不到 150 元）；北野店更安静。"},{"n":"老祥记 南京町","jp":"老祥記","d":"D3","lon":135.1869,"lat":34.6867,"dish":"猪肉包 · 元祖","img":"f_nankinmachi","intro":"1915 年创业的南京町猪肉包元祖，长年排队。","why":"招牌：猪肉包（现蒸），皮厚汁多；配杏仁豆腐刚刚好。","price":"500–1,000 円","tip":"南京町主街上，买完边走边吃；现金更方便。"},{"n":"駅弁屋 祭","jp":"駅弁屋 祭","d":"D5","lon":135.4953,"lat":34.7024,"dish":"铁路便当 · 车站","img":"f_ekiben","intro":"大阪站内的駅弁专门店，几十种便当当天现取。","why":"招牌：当季幕之内、牛肉便当；上车前买一份是铁道旅行仪式感。","price":"1,000–1,600 円","tip":"选烤物耐放，别买刺身类；新快速上吃刚好。"},{"n":"京都拉面小路","jp":"京都拉麵小路","d":"D5","lon":135.7618,"lat":34.9858,"dish":"拉面 · 一站集合","img":"f_ramen","intro":"京都站 10F 的拉面主题街，全国名店一次吃遍。","why":"推荐：富山黑拉面（黑酱油）、京都酱油系；每家都有招牌。","price":"800–1,300 円","tip":"11:00 开门、18:00 后排队；先在电梯口看排队板再决定吃哪家。"},{"n":"奥丹清水","jp":"奥丹 清水","d":"D6","lon":135.7808,"lat":34.9968,"dish":"汤豆腐 · 老铺","img":"f_yudofu","intro":"只做汤豆腐一百年，京都精进料理的代表。","why":"招牌：汤豆腐套餐（含汤叶、胡麻豆腐）；庭院座最值。","price":"4,000–6,000 円","tip":"开门就进可以坐到看庭院的位置；素食者友好。"},{"n":"廣川 岚山","jp":"うなぎ廣川","d":"D7","lon":135.6722,"lat":35.0096,"dish":"鳗鱼饭 · 米其林","img":"f_unagi","intro":"岚山鳗鱼饭名店，米其林常客，旺季一位难求。","why":"招牌：鳗鱼盖饭、鳗鱼饭三吃；外皮微焦，酱汁克制。","price":"4,000–8,000 円","tip":"必须预约（不接受当日排队为常态）；行程紧就改祇园うおまさ。"},{"n":"中村藤吉 宇治","jp":"中村藤吉本店","d":"D8","lon":135.8076,"lat":34.8858,"dish":"抹茶 · 甜品","img":"f_matcha","intro":"宇治抹茶代名词，本店就在宇治川边。","why":"招牌：生茶果冻、抹茶荞麦面；等位时可在茶室喝茶。","price":"1,000–2,000 円","tip":"本店要取号，先登记再去平等院，回来刚好；茶室不排队。"},{"n":"志津香 奈良","jp":"志津香 公園前店","d":"D8","lon":135.8407,"lat":34.6849,"dish":"釜饭 · 名物","img":"f_kamameshi","intro":"奈良釜饭代名词，砂锅现煮 18 分钟。","why":"招牌：大和牛釜饭、奈良七种釜饭；锅巴是灵魂。","price":"1,800–3,000 円","tip":"开门前就去取号（常见 1 小时+）；先逛东大寺再回来吃。"},{"n":"平宗 奈良町","jp":"柿の葉ずし 平宗","d":"D8","lon":135.8257,"lat":34.6797,"dish":"柿叶寿司 · 乡土","img":"f_kakinoha","intro":"奈良乡土寿司「柿叶寿司」的代表老铺。","why":"招牌：鲭鱼/鲑鱼柿叶寿司；柿叶可吃可不吃，微咸耐放。","price":"1,200–2,000 円","tip":"奈良町老街店可内用；买盒装回酒店当夜宵也合适。"}];
+
+const FOODIMG={f_oden:"img/f_oden.jpg",f_ramen:"img/f_ramen.jpg",f_takoyaki:"img/f_takoyaki.jpg",f_okonomiyaki:"img/f_okonomiyaki.jpg",f_kushikatsu:"img/f_kushikatsu.jpg",f_crab:"img/f_crab.jpg",f_butaman:"img/f_butaman.jpg",f_kobebeef:"img/f_kobebeef.jpg",f_purin:"img/f_purin.jpg",f_nankinmachi:"img/f_nankinmachi.jpg",f_ekiben:"img/f_ekiben.jpg",f_yudofu:"img/f_yudofu.jpg",f_unagi:"img/f_unagi.jpg",f_matcha:"img/f_matcha.jpg",f_kamameshi:"img/f_kamameshi.jpg",f_kakinoha:"img/f_kakinoha.jpg"};
 
 /* 每日逐站动线 */
 const DAYSTOPS={
@@ -428,8 +437,9 @@ map.on('style.load',()=>{
             'text-anchor':'left','text-offset':[0.8,0],'text-allow-overlap':false},
     paint:{'text-color':'#2A2620','text-halo-color':'rgba(255,253,248,.95)','text-halo-width':2.2}},'place-labels');
 
-  map.addSource('foodpins',{type:'geojson',data:{type:'FeatureCollection',features:FOODPINS.map(f=>({
-    type:'Feature',properties:{n:f.n,t:f.d+' · '+f.n,note:f.note},geometry:{type:'Point',coordinates:[f.lon,f.lat]}}))}});
+  map.addSource('foodpins',{type:'geojson',data:{type:'FeatureCollection',features:FOODPINS.map((f,i)=>({
+    type:'Feature',id:i,properties:{n:f.n,t:f.d+' · '+f.n,note:f.note||f.intro,i:i},
+    geometry:{type:'Point',coordinates:[f.lon,f.lat]}}))}});
   map.addLayer({id:'food-dot',type:'circle',source:'foodpins',
     paint:{'circle-radius':5.5,'circle-color':'#C98A3C','circle-stroke-color':'#FFFDF8','circle-stroke-width':1.6,'circle-opacity':.95}},'place-labels');
   map.addLayer({id:'food-label',type:'symbol',source:'foodpins',minzoom:7,
@@ -437,8 +447,8 @@ map.on('style.load',()=>{
             'text-anchor':'left','text-offset':[0.7,0],'text-allow-overlap':false},
     paint:{'text-color':'#8A5A1E','text-halo-color':'rgba(255,253,248,.95)','text-halo-width':2}}, 'place-labels');
   map.on('click','food-dot',e=>{
-    const f=e.features[0];
-    showStopPopup(f.geometry.coordinates[0],f.geometry.coordinates[1],f.properties.n,f.properties.note);
+    const p=e.features[0].properties;
+    fillFoodCard(FOODPINS[+p.i]);
   });
   map.on('mousemove','food-dot',()=>map.getCanvas().style.cursor='pointer');
   map.on('mouseleave','food-dot',()=>map.getCanvas().style.cursor='');
@@ -467,6 +477,8 @@ map.on('style.load',()=>{
     return best;
   }
   map.on('click',e=>{
+    // 吃处图层优先：命中饮食点就交给 food-dot 的图层事件处理，避免被地区/图钉逻辑覆盖
+    if(state.itin&&map.getLayer('food-dot')&&map.queryRenderedFeatures(e.point,{layers:['food-dot']}).length)return;
     const pin=state.itin?nearestPin(e.point):null;
     if(pin){selectDay(pin);return;}
     const f=map.queryRenderedFeatures(e.point,{layers:['region-fill']})[0];
@@ -506,6 +518,7 @@ map.on('style.load',()=>{
 /* ================= 交互 ================= */
 const card=document.getElementById('card');
 const dayBody=document.getElementById('dayBody');
+const foodBody=document.getElementById('foodBody');
 let dayOpen=null;
 let stopPopup=null;
 function showStopPopup(lon,lat,n,note){
@@ -546,9 +559,46 @@ function setDayRoute(d){
   ['dayroute-line','daystop-halo','daystop-num'].forEach(l=>map.setLayoutProperty(l,'visibility',stops.length?'visible':'none'));
   return stops;
 }
+
+let foodOpen=false;
+function fillFoodCard(f){
+  if(!f)return;
+  foodOpen=true;
+  card.classList.add('food','open');
+  card.classList.remove('day');
+  const imgPath=FOODIMG[f.img];
+  const q=encodeURIComponent(f.n.replace(/·.*$/,'').trim()+' 神戸/大阪');
+  const area=(f.jp||'').length?' '+(f.d==='D3'?'神户':f.d==='D8'?'奈良/宇治':'大阪/京都'):'';
+  foodBody.innerHTML=`
+    <div class="tag" style="color:#8A5A1E;border-color:rgba(160,110,40,.45)">推荐吃处 · ${f.d}</div>
+    <h2 class="serif">${f.n}</h2>
+    <div class="en">${f.jp||''}</div>
+    ${imgPath?`<div class="imgs"><img src="${imgPath}" alt="${f.n}"></div>`:''}
+    <div class="tg" style="color:#8A5A1E">${f.dish||''}</div>
+    <p class="desc">${f.intro||''}</p>
+    <div class="sec"><div class="sec-t">必点 / 推荐</div><ul><li>${f.why||''}</li></ul></div>
+    <div class="cmeta" style="margin-top:10px">价位 <b>${f.price||'—'}</b></div>
+    <div class="desc" style="margin-top:8px;color:#6B6152">${f.tip||''}</div>
+    <div class="lnks" style="margin-top:12px">
+      <a href="https://tabelog.com/rstLst/?sw=${encodeURIComponent(f.n.replace(/·.*$/,'').trim())}" target="_blank" rel="noopener">Tabelog 搜索 ↗</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">在地图 App 打开 ↗</a>
+    </div>
+    <div class="sec" style="margin-top:14px"><div class="sec-t">操作</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+        <button class="minibtn" id="foodZoom">镜头对准这家</button>
+        ${{'D1':'1','D2':'2','D3':'3','D4':'4','D5':'5','D6':'6','D7':'7','D8':'8','D9':'9'}[f.d]?`<button class="minibtn" id="foodDay">看当天动线</button>`:''}
+      </div>
+    </div>`;
+  const z=document.getElementById('foodZoom');
+  if(z)z.onclick=()=>map.flyTo({center:[f.lon,f.lat],zoom:14,pitch:55,bearing:-14,duration:1300,essential:true});
+  const dbtn=document.getElementById('foodDay');
+  if(dbtn)dbtn.onclick=()=>{ const d=f.d; foodOpen=false; card.classList.remove('food'); selectDay(d); };
+}
+function hideFoodCard(){ foodOpen=false; card.classList.remove('food'); }
+
 function fillDayCard(d){
   const dd=DAYDATA[d], pin=PINS.find(p=>p.d===d);
-  dayOpen=d;
+  dayOpen=d; foodOpen=false; card.classList.remove('food');
   card.classList.add('day','open');
   updateDayChips();
   const stops=DAYSTOPS[d]||[];
@@ -600,7 +650,7 @@ function select(id){
   if(!map.getSource('prefs')){ state.pendingSel=id; return; }
   try{
   state.interacted=true;
-  dayOpen=null;card.classList.remove('day');updateDayChips();
+  dayOpen=null;card.classList.remove('day');hideFoodCard();updateDayChips();
   if(state.sel&&regionIds[state.sel])regionIds[state.sel].forEach(f=>map.setFeatureState({source:'prefs',id:f},{selected:false}));
   state.sel=id;
   const r=REGIONS.find(q=>q.id===id);
@@ -637,6 +687,7 @@ function setItin(v,opts={}){
   else{
     card.classList.remove('istrip');
     if(dayOpen){dayOpen=null;card.classList.remove('day');card.classList.remove('open');updateDayChips();hideDayLayers();}
+    hideFoodCard();
   }
 }
 
@@ -660,6 +711,13 @@ function updateDayChips(){
 }
 swEl.addEventListener('click',()=>setItin(!state.itin));
 document.getElementById('cardX').addEventListener('click',()=>{
+  if(foodOpen){
+    hideFoodCard();
+    if(dayOpen){ const d=dayOpen; fillDayCard(d); setDayRoute(d); setDayLinks(d); }
+    else if(state.sel){ const r=REGIONS.find(q=>q.id===state.sel); fillCard(r); card.classList.add('open'); }
+    else card.classList.remove('open');
+    return;
+  }
   if(dayOpen){
     dayOpen=null;card.classList.remove('day');
     hideDayLayers();showGlobalRoute();updateDayChips();
