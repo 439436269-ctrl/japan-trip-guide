@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C2402F">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本旅行图鉴 · 吃 建筑 行</title>
+<style>
+  :root{
+    --paper:#F4EFE6; --ink:#2A2620; --sub:#7A7264; --accent:#C2402F;
+    --line:#DDD3C0; --card:#FFFDF8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);
+    font-family:'PingFang SC','Microsoft YaHei',sans-serif;-webkit-font-smoothing:antialiased}
+  .serif{font-family:Georgia,'Songti SC','STSong','SimSun',serif}
+  a{color:inherit}
+
+  .top{max-width:1180px;margin:0 auto;padding:30px 34px 0}
+  .backrow{display:flex;justify-content:space-between;align-items:center}
+  .back{font-size:12.5px;color:var(--sub);text-decoration:none;border:1px solid var(--line);
+        border-radius:99px;padding:6px 14px;background:rgba(255,253,248,.8)}
+  .back:hover{color:var(--accent);border-color:var(--accent)}
+  h1{font-size:36px;font-weight:600;letter-spacing:.12em;margin-top:22px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{margin-top:8px;font-size:13px;color:var(--sub);letter-spacing:.06em}
+  .rule{width:52px;height:2px;background:var(--accent);margin-top:14px}
+
+  .tabs{display:flex;gap:10px;margin-top:24px}
+  .tabs button{font-size:14px;letter-spacing:.14em;color:#5C5344;background:transparent;
+    border:1px solid var(--line);border-radius:12px 12px 0 0;border-bottom:none;
+    padding:12px 26px 10px;cursor:pointer;font-family:inherit;transition:all .2s}
+  .tabs button i{font-style:normal;font-size:11px;color:#B3A78E;margin-left:6px}
+  .tabs button:hover{color:var(--accent)}
+  .tabs button.on{background:var(--card);border-color:var(--line);color:var(--ink);font-weight:600;
+    box-shadow:0 -6px 18px rgba(70,58,36,.06)}
+  .tabs button.on i{color:var(--accent)}
+
+  .intro{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:0 12px 12px 0;padding:14px 18px;font-size:12.5px;color:#4E463A;line-height:1.8;
+    margin:0 34px}
+  .intro b{color:var(--accent);font-weight:600}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:16px;
+    padding:22px 34px 70px;max-width:1180px;margin:0 auto}
+  section{border-top:1px solid var(--line);margin-top:0;padding-top:22px}
+  section[hidden]{display:none}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 10px 26px rgba(70,58,36,.07);transition:transform .18s,box-shadow .18s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(70,58,36,.13)}
+  .card img,.card .ph{width:100%;height:150px;object-fit:cover;display:block}
+  .card .ph{display:flex;align-items:center;justify-content:center;font-size:30px;color:#C9BFA8;
+    background:#EFE9DB;letter-spacing:.25em}
+  .cbody{padding:14px 16px 16px}
+  .cname{font-size:17px;font-weight:600;letter-spacing:.04em}
+  .cjp{font-size:11px;color:#B3A78E;letter-spacing:.18em;margin-left:8px}
+  .cdays{float:right;font-size:11px;color:var(--accent);border:1px solid rgba(194,64,47,.4);
+    border-radius:99px;padding:2px 9px;white-space:nowrap}
+  .ctype{display:inline-block;font-size:10.5px;letter-spacing:.15em;color:var(--accent);
+    border:1px solid rgba(194,64,47,.45);border-radius:99px;padding:2px 9px;margin-bottom:8px}
+  .cwhat{font-size:12.5px;color:#4E463A;line-height:1.75;margin-top:9px}
+  .cmeta{margin-top:9px;font-size:11.5px;color:var(--sub);line-height:1.7}
+  .cmeta b{color:var(--ink);font-weight:500}
+  .ctip{margin-top:7px;font-size:11.5px;color:#8A7F6C;line-height:1.65}
+  .ctip::before{content:'☞ ';color:var(--accent)}
+  .cmap{display:inline-block;margin-top:10px;font-size:11.5px;color:var(--accent);text-decoration:none;
+    border:1px solid rgba(194,64,47,.4);border-radius:99px;padding:4px 12px;transition:all .15s}
+  .cmap:hover{background:var(--accent);color:#FFF7EE}
+  .shops{margin-top:10px}
+  .shops-t{font-size:11px;color:var(--accent);letter-spacing:.18em;font-weight:600;margin-bottom:5px}
+  .shops ul{list-style:none}
+  .shops li{font-size:11.5px;color:#4E463A;line-height:1.6;padding:3px 0;border-top:1px dashed #EEE5D3}
+  .shops li b{color:var(--ink);font-weight:600;display:block}
+  .shops .snote{display:block;color:#8A7F6C;font-size:11px;margin:1px 0 2px}
+  .shops li a{font-size:11px;color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(194,64,47,.4)}
+
+  /* ---------- 打卡 ---------- */
+  .card{position:relative}
+  .card .stamp{position:absolute;top:10px;left:10px;width:28px;height:28px;border-radius:50%;
+    border:1.5px solid rgba(194,64,47,.55);background:rgba(255,253,248,.94);color:transparent;
+    font-size:13px;cursor:pointer;line-height:1;z-index:2;transition:all .15s}
+  .card .stamp:hover{border-color:var(--accent);transform:scale(1.1)}
+  .card.done .stamp{background:var(--accent);border-color:var(--accent);color:#FFF7EE}
+  .card.done img,.card.done .ph{filter:saturate(.35);opacity:.92}
+  .card.done::after{content:'打卡済';position:absolute;top:46px;right:12px;z-index:2;
+    font-size:13px;font-weight:700;color:var(--accent);border:2px solid var(--accent);
+    border-radius:6px;padding:2px 7px;letter-spacing:.25em;text-indent:.25em;
+    transform:rotate(-11deg);background:rgba(255,253,248,.82);
+    font-family:Georgia,'Songti SC','SimSun',serif}
+  #prog{display:flex;align-items:center;gap:12px;margin-top:16px}
+  #progtext{font-size:11.5px;color:var(--sub);white-space:nowrap}
+  #prog .pb{flex:1;height:6px;background:#E7DFCE;border-radius:99px;overflow:hidden}
+  #prog .pb i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s}
+  #progreset{font-size:11px;color:#B9AE99;background:none;border:none;cursor:pointer;font-family:inherit}
+  #progreset:hover{color:var(--accent)}
+
+  footer{max-width:1180px;margin:0 auto;padding:0 34px 40px;font-size:10.5px;color:#B8AD97;letter-spacing:.1em}
+  footer a{color:#B8AD97}
+
+  @media (max-width:760px){
+    h1{font-size:26px}
+    .grid{grid-template-columns:1fr;padding:18px 20px 50px}
+    .intro{margin:0 20px}
+    .top{padding:22px 20px 0}
+  }
+  @media print{.tabs,.back{display:none}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="backrow">
+    <a class="back" href="japan-real-map.html">← 返回行程地图</a>
+    <span style="font-size:11px;color:#B8AD97;letter-spacing:.14em">12.19 – 12.27 · 关西</span>
+  </div>
+  <h1 class="serif">日本旅行图鉴</h1>
+  <div class="sub">8 天里会遇见的东西，提前认识一遍——每一张卡都标着「哪天用得上」</div>
+  <div class="rule"></div>
+  <nav class="tabs">
+    <button data-tab="prep" class="on">行前 <i>17 项</i></button>
+    <button data-tab="food">吃 <i>24 种</i></button>
+    <button data-tab="arch">建筑 <i>13 类</i></button>
+    <button data-tab="traffic">行 <i>9 种</i></button>
+    <button data-tab="buy">买 <i>12 类</i></button>
+    <button data-tab="otaku">圣地 <i>10 处</i></button>
+    <button data-tab="festival">节庆 <i>6 场</i></button>
+    <button data-tab="etiquette">礼仪 <i>10 条</i></button>
+  </nav>
+  <div id="prog">
+    <span id="progtext">打卡进度 0 / 46</span>
+    <div class="pb"><i id="progfill"></i></div>
+    <button id="progreset">重置打卡</button>
+  </div>
+</div>
+
+<main>
+  <section id="tab-prep">
+    <div class="intro">出发前的 <b>17 件事</b>，按时间线排好：提前 1 个月办证件订大件 → 2 周前搞定预约和网络 → 3 天前换现金装 APP → 当天只管护照和充电宝。做完一件<b>点左上角圆圈盖章</b>——100 件全部盖满，就是一场准备充分的旅行。</div>
+    <div class="grid" id="grid-prep"></div>
+  </section>
+  <section id="tab-food">
+    <div class="intro">吃的部分按 <b>「你 8 天实际会经过的地方」</b> 组织：大阪负责小吃与夜宵，神户负责和牛，京都负责汤豆腐、抹茶和精进料理。标注了<b>大概价位</b>（日元/人）和<b>点单建议</b>——热门店记得错峰，圣诞前后（12/24–25）热门餐厅务必提前订位。</div>
+    <div class="grid" id="grid-food"></div>
+  </section>
+  <section id="tab-arch" hidden>
+    <div class="intro">看建筑不用背术语，认三个词就够：<b>「城」看石垣与天守</b>、<b>「寺」看木构与庭园</b>、<b>「社」看鸟居与参道</b>。你的行程里正好三种都齐了——大阪城是复元天守的代表，清水寺是悬空舞台的孤例，伏见稻荷的千本鸟居则是全日本最著名的「隧道」。</div>
+    <div class="grid" id="grid-arch"></div>
+  </section>
+  <section id="tab-traffic" hidden>
+    <div class="intro">关西旅行的交通 90% 靠 <b>IC 卡 + 步行</b>：一张手机里的 ICOCA/Suica 刷遍 JR、私铁、地铁和便利店。长途交给 JR 新快速，市区交给地铁和双腿，行李重就交给宅急便。每种方式都标了<b>你行程里哪天用</b>。</div>
+    <div class="grid" id="grid-traffic"></div>
+  </section>
+  <section id="tab-buy" hidden>
+    <div class="intro">购物总原则：<b>护照随身、满 5,001 円免税、密封袋出境前不拆</b>。你的清单主力在 D4（心斋桥药妆+难波电器）和 D5（梅田百货+角色店），D9 奥莱收尾。每张卡都标了<b>比价和砍价技巧</b>。</div>
+    <div class="grid" id="grid-buy"></div>
+  </section>
+  <section id="tab-otaku" hidden>
+    <div class="intro">为二次元准备的<b>「圣地巡礼」清单</b>：大阪日本桥是关西的秋叶原，梅田三个商场能买遍任天堂/宝可梦/chiikawa，京都的鸭川三角洲和宇治则是《声之形》《吹响吧！上低音号》的取景地。每处都标了<b>对应你哪天经过</b>。</div>
+    <div class="grid" id="grid-otaku"></div>
+  </section>
+  <section id="tab-festival" hidden>
+    <div class="intro">你的行程撞上了<b>关西冬天最美的三周</b>：大阪光之饗宴全程在线、神户 Harborland 圣诞灯饰、各地圣诞市集都在 12 月；但注意 <b>神户ルミナリエ 2026 年 12 月不办</b>（改 2027 年 1 月末）、<b>岚山花灯路</b>近年只办到 12 月中旬。这些是<b>「行程之外的彩蛋」</b>，时间对得上就插进去。</div>
+    <div class="grid" id="grid-festival"></div>
+  </section>
+  <section id="tab-etiquette" hidden>
+    <div class="intro">第一次去日本，<b>十条礼仪</b>让你不出戏：拍照、脱鞋、电车静音、垃圾随身……外加<b>地震应急和就医流程</b>——用不上最好，用得上不慌。</div>
+    <div class="grid" id="grid-etiquette"></div>
+  </section>
+</main>
+
+<footer>IMAGES © WIKIMEDIA COMMONS CONTRIBUTORS · GUIDE FOR 12.19–12.27 KANSAI TRIP · PROTOTYPE 2026</footer>
+
+<script>
+const GIMG={"f_izakaya":"https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Quality_izakaya_in_Ebisu_2.jpg/960px-Quality_izakaya_in_Ebisu_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_konbini":"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Bento_at_Hanabishi%2C_Koyasan.jpg/960px-Bento_at_Hanabishi%2C_Koyasan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_takoyaki":"https://upload.wikimedia.org/wikipedia/commons/d/d8/Takoyaki_by_yomi955.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_okonomiyaki":"https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Okonomiyaki_with_tomato_and_cheeze_%284716607523%29.jpg/960px-Okonomiyaki_with_tomato_and_cheeze_%284716607523%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_kushikatsu":"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Miso_katsu_by_OiMax.jpg/960px-Miso_katsu_by_OiMax.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_crab":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Japanese_Kani-D%C5%8Draku_cuisine_2.JPG/960px-Japanese_Kani-D%C5%8Draku_cuisine_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_fugu":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Fugu.Tsukiji.CR.jpg/960px-Fugu.Tsukiji.CR.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_sushi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Conveyor_belt_in_Seoul%2C_Korea_-_DSC00733.JPG/960px-Conveyor_belt_in_Seoul%2C_Korea_-_DSC00733.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_kobebeef":"https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/4_Kobe_Beef%2C_Kobe_Japan.jpg/960px-4_Kobe_Beef%2C_Kobe_Japan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_nankinmachi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Kobe_Kobe_Chinatown_1.jpg/960px-Kobe_Kobe_Chinatown_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_yudofu":"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Japanese_SilkyTofu_%28Kinugoshi_Tofu%29.JPG/960px-Japanese_SilkyTofu_%28Kinugoshi_Tofu%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_matcha":"https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Dulces_Tradicionales_Japoneses_%2851045927132%29.jpg/960px-Dulces_Tradicionales_Japoneses_%2851045927132%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_dango":"https://upload.wikimedia.org/wikipedia/commons/e/e3/Tsukimi_dango_by_yomi955.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_unagi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Tokyo_Chikuyotei_Unadon01s2100.jpg/960px-Tokyo_Chikuyotei_Unadon01s2100.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_inarisushi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Kantofu_Inarizushi.jpg/960px-Kantofu_Inarizushi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_soba":"https://upload.wikimedia.org/wikipedia/commons/5/52/Soba_and_curry_soba_in_Roppongi_by_Eric_I._E.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_kamameshi":"https://upload.wikimedia.org/wikipedia/commons/5/55/Kamameshi.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_kakinoha":"https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Kakinohazusi.jpg/960px-Kakinohazusi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","f_butaman":"https://upload.wikimedia.org/wikipedia/commons/8/87/Nikuman.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_butterbeer":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Wizarding_World_of_Harry_Potter_Castle.jpg/960px-Wizarding_World_of_Harry_Potter_Castle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_nijo":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Nijo_Castle.jpg/960px-Nijo_Castle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_daibutsuden":"https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/T%C5%8Ddai-ji_hdsr_IMG_3862.jpg/960px-T%C5%8Ddai-ji_hdsr_IMG_3862.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_ijinkan":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/%E7%A5%9E%E6%88%B8%E5%8C%97%E9%87%8E%E7%95%B0%E4%BA%BA%E9%A4%A8%E8%A1%97_-_panoramio.jpg/960px-%E7%A5%9E%E6%88%B8%E5%8C%97%E9%87%8E%E7%95%B0%E4%BA%BA%E9%A4%A8%E8%A1%97_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_tower":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Azumaya_and_Abeno_Harukas_in_the_reflection_at_keitakuen.jpg/960px-Azumaya_and_Abeno_Harukas_in_the_reflection_at_keitakuen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_station":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Kyoto_Station_November_2016_-02.jpg/960px-Kyoto_Station_November_2016_-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_port":"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/%E7%A5%9E%E6%88%B8%E3%83%9D%E3%83%BC%E3%83%88%E3%82%BF%E3%83%AF%E3%83%BC_-_panoramio.jpg/960px-%E7%A5%9E%E6%88%B8%E3%83%9D%E3%83%BC%E3%83%88%E3%82%BF%E3%83%AF%E3%83%BC_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_kix":"https://upload.wikimedia.org/wikipedia/commons/a/a4/Finnair_MD-11_%28OH-LGF%29_taxiing_at_Kansai_International_Airport.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","a_tsutenkaku":"https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/New_Tsutenkaku_in_201409_003.JPG/960px-New_Tsutenkaku_in_201409_003.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_bridge":"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Ebisubashi_building_-_panoramio.jpg/960px-Ebisubashi_building_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_private":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/%E9%98%AA%E6%80%A5%E9%9B%BB%E8%BB%8A_-_panoramio.jpg/960px-%E9%98%AA%E6%80%A5%E9%9B%BB%E8%BB%8A_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_metro":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Osaka_Municipal_Subway_logo_001.JPG/960px-Osaka_Municipal_Subway_logo_001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_bus":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/ISUZU_ERGA%2C_Kyoto_Municipal_Bus_%281513%29.jpg/960px-ISUZU_ERGA%2C_Kyoto_Municipal_Bus_%281513%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_taxi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/%E6%97%A5%E6%9C%AC%E3%82%BF%E3%82%AF%E3%82%B7%E3%83%BC_%E5%BF%A0%E7%AF%80%E9%A7%85%E5%89%8D%E5%96%B6%E6%A5%AD%E6%89%80%EF%BC%88%E5%80%8B%E4%BA%BA%E8%87%AA%E5%8B%95%E8%BB%8A%E3%83%8A%E3%83%B3%E3%83%90%E3%83%BC%E6%B6%88%E3%81%97%E3%81%AE%E4%BF%AE%E6%AD%A3%E7%89%88%EF%BC%89.jpg/960px-%E6%97%A5%E6%9C%AC%E3%82%BF%E3%82%AF%E3%82%B7%E3%83%BC_%E5%BF%A0%E7%AF%80%E9%A7%85%E5%89%8D%E5%96%B6%E6%A5%AD%E6%89%80%EF%BC%88%E5%80%8B%E4%BA%BA%E8%87%AA%E5%8B%95%E8%BB%8A%E3%83%8A%E3%83%B3%E3%83%90%E3%83%BC%E6%B6%88%E3%81%97%E3%81%AE%E4%BF%AE%E6%AD%A3%E7%89%88%EF%BC%89.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_bike":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/%E4%BA%AC%E9%83%BD%E5%85%AB%E5%B9%A1%E6%9C%A8%E6%B4%A5%E8%87%AA%E8%BB%A2%E8%BB%8A%E9%81%93_-_panoramio.jpg/960px-%E4%BA%AC%E9%83%BD%E5%85%AB%E5%B9%A1%E6%9C%A8%E6%B4%A5%E8%87%AA%E8%BB%A2%E8%BB%8A%E9%81%93_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_luggage":"https://upload.wikimedia.org/wikipedia/commons/3/3e/%E5%A4%A7%E9%98%AA%E5%9F%8E%E6%A1%9C%E9%96%80%E3%81%8B%E3%82%89%E5%87%BA%E3%81%A6%E3%81%8F%E3%82%8B%E3%82%AF%E3%83%AD%E3%83%8D%E3%82%B3%E3%83%A4%E3%83%9E%E3%83%88%E3%81%AE%E5%AE%85%E6%80%A5%E4%BE%BF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","f_ekiben":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Japan_Pic_1_Bento.jpg/960px-Japan_Pic_1_Bento.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_castle":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/The_Siege_of_Osaka_Castle.jpg/960px-The_Siege_of_Osaka_Castle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_temple":"https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_shrine":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/KyotoFushimiInariLarge.jpg/960px-KyotoFushimiInariLarge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_byodoin":"https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Byodoin_calligrapher_close.jpg/960px-Byodoin_calligrapher_close.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","a_machiya":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Ninenzaka-yoru.JPG/960px-Ninenzaka-yoru.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","t_walk":"https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Ninenzaka-yoru.JPG/960px-Ninenzaka-yoru.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"};
+const FOOD=[
+ {n:'关东煮',jp:'おでん',k:'f_oden',days:'D1 · 便利店/居酒屋',price:'400–800 円',
+  what:'萝卜、蛋、牛筋串在昆布柴鱼汤里慢炖，冬天进任何一家店先来一串暖手。',
+  tip:'便利店关东煮自取结账；居酒屋的おでん更有魂，萝卜要选最中间那块。'},
+ {n:'拉面',jp:'ラーメン',k:'f_ramen',days:'D1 · D5',price:'800–1,200 円',
+  what:'道顿堀的金龙是酱油系代表；京都站拉面小路把全国名店装进一层楼。',
+  tip:'吃面要快——面坨了会被老板心疼；汤可以喝但别喝光，太咸。'},
+ {n:'居酒屋',jp:'いざかや',k:'f_izakaya',days:'D1 · 抵达夜',price:'2,500–4,000 円/人',
+  what:'傍晚亮起红灯笼的小店，点啤酒+枝豆+烤鸡串，是大坂夜生活的正确开场。',
+  tip:'很多店收「お通し」（开胃小菜费）300–500 円，是潜规则不是宰客。'},
+ {n:'便利店',jp:'コンビニ',k:'f_konbini',days:'每天',price:'200–600 円/餐',
+  what:'7-11 的炸鸡、全家蛋黄酱饭团、罗森的甜点——便利店是日本旅行的隐藏主食堂。',
+  tip:'关东煮冬天 17:00 后上新；微波炉在收银台旁，店员会帮你加热。'},
+ {n:'章鱼烧',jp:'たこ焼き',k:'f_takoyaki',days:'D4 · 道顿堀/新世界',price:'600–900 円',
+  what:'外皮焦脆、内芯滚烫流质，柴鱼片在上面跳舞——大坂的「灵魂食物」。',
+  tip:'刚出炉别一口吞（里面是岩浆）；くくる本店常年排队，可以先拿预约券逛别的。'},
+ {n:'大阪烧',jp:'お好み焼き',k:'f_okonomiyaki',days:'D4 · 道顿堀',price:'800–1,500 円',
+  what:'面糊里拌入高丽菜和猪肉在铁板上煎，最后抹酱撒海苔粉——「日式披萨」。',
+  tip:'很多店是铁板自己动手煎，店员会教；酱料分大坂风（甜咸）和广岛风（更重）。'},
+ {n:'串炸',jp:'串カツ',k:'f_kushikatsu',days:'D4 · 新世界',price:'150–250 円/串',
+  what:'裹面包衣炸的牛肉串、大虾串、莲藕串，通天阁下的庶民美食。',
+  tip:'酱汁只能蘸一次（公共酱缸）——卷心菜丝是免费的「舀酱工具」。'},
+ {n:'蟹料理',jp:'かに道楽',k:'f_crab',days:'D4 · 道顿堀',price:'3,000–8,000 円',
+  what:'门口的大螃蟹会动。雪蟹六吃（刺身、烤、涮、蒸、粥、天妇罗）是冬天仪式感。',
+  tip:'12 月正是蟹季；午市套餐比晚市便宜三成。'},
+ {n:'河豚',jp:'ふぐ',k:'f_fugu',days:'D4 · 备选',price:'3,500–8,000 円',
+  what:'大坂是河豚消费之都，冬天てっちり（河豚火锅）暖身又应季，处理过的完全安全。',
+  tip:'吃完整锅粥才叫收尾；连锁「づぼらや」适合第一次尝试。'},
+ {n:'回转寿司',jp:'かいてんずし',k:'f_sushi',days:'D1 · D4',price:'100–150 円/盘',
+  what:'スシロー、くら寿司是国民食堂，新鲜度和价格都友好，手机扫码点单。',
+  tip:'APP 取号免排队（くら寿司官网/スシロー中文版都有）；甜虾和炙烤三文鱼必点。'},
+ {n:'神户牛·烤肉',jp:'こうべぎゅう',k:'f_kobebeef',days:'D3 · 三宫',price:'午市 3,000–5,000 円',
+  what:'霜降如大理石纹的神户牛入口即化——「烤肉」和「铁板牛排」是两种打开方式。',
+  tip:'Steak Land 午市套餐是穷游传说；想坐正席吃 A5 级，提前一周订「モーリヤ」。'},
+ {n:'南京町',jp:'なんきんまち',k:'f_nankinmachi',days:'D3 · 神户',price:'500–1,500 円',
+  what:'神户中华街，猪肉包、烧卖、杏仁豆腐边走边吃， 日本三大中华街之一。',
+  tip:'和神户牛错开：牛排当午餐，南京町当下午茶，一样都不落。'},
+ {n:'神户布丁',jp:'プリン',k:'f_purin',days:'D3 · 三宫',price:'400–600 円',
+  what:'神户是西点重镇，焦糖布丁和「神户牧场」系甜点是港边散步的标配。',
+  tip:'包装精美的布丁和费列尔奶酪蛋糕都可以当伴手礼带上电车。'},
+ {n:'铁路便当',jp:'駅弁',k:'f_ekiben',days:'D5 · JR大阪站',price:'1,000–1,600 円',
+  what:'在车站买一盒当季駅弁带上车吃，是日本铁道旅行的仪式感本体。',
+  tip:'梅田「駅弁屋 祭」有几十种可选；当天的刺身类不要买，选烤物耐放。'},
+ {n:'汤豆腐',jp:'湯豆腐',k:'f_yudofu',days:'D6 · 清水寺',price:'4,000–6,000 円',
+  what:'京都禅寺料理的代表：昆布高汤里只放豆腐，蘸柚子酱油——吃的是「素」的极致。',
+  tip:'奥丹清水只做汤豆腐一百年，午市有机 会坐到看庭院的位置；素食者友好。'},
+ {n:'抹茶甜品',jp:'抹茶スイーツ',k:'f_matcha',days:'D6 · D8',price:'800–1,600 円',
+  what:'抹茶冰淇淋、抹茶荞麦面、生茶果冻——宇治和东山是抹茶的两个宇宙。',
+  tip:'伊藤久右卫门（东山/宇治）买伴手礼，中村藤吉（宇治）坐下来吃正餐级甜品。'},
+ {n:'烤团子',jp:'だんご',k:'f_dango',days:'D6 · 二三年坂',price:'150–300 円/串',
+  what:'碳烤酱油团子现烤现刷甜酱，走完二年坂刚好一串在手。',
+  tip:'三年坂-二年坂沿街的小铺一家比一家香，留点胃给「豆乳甜甜圈」。'},
+ {n:'鳗鱼饭',jp:'うなぎ丼',k:'f_unagi',days:'D7 · 午餐',price:'3,000–6,000 円',
+  what:'蒲烧鳗鱼盖在饭上，焦香酱甜——名店一泽(米其林常客)值得专门一顿。',
+  tip:'廣川（岚山）日本第一但要预约+离你路线远；折中方案：京都站或祇园的老铺午市。'},
+ {n:'稻荷寿司·狐狸乌冬',jp:'きつねうどん',k:'f_inarisushi',days:'D7 · 伏见稻荷',price:'500–1,000 円',
+  what:'甜豆皮寿司+油炸豆腐乌冬——都是「狐狸爱吃的」，爬千本鸟居前后的标配。',
+  tip:'参道上的小吃店随买随吃；半山腰的茶屋可以坐下喝碗热汤。'},
+ {n:'荞麦面',jp:'そば',k:'f_soba',days:'D6 · D7',price:'800–1,500 円',
+  what:'两分一分荞麦粉的手打面配柴鱼蘸汁，京都老铺讲究「现打现吃十分钟内」。',
+  tip:'吃完可以「ゆず胡椒」柚子胡椒提味；天荞麦（天妇罗荞麦面）最饱腹。'},
+ {n:'釜饭',jp:'かまめし',k:'f_kamameshi',days:'D8 · 奈良',price:'1,800–3,000 円',
+  what:'小砂锅明火现煮 18 分钟，锅巴是灵魂——奈良志津香是全日本釜饭代名词。',
+  tip:'志津香下午会售罄，开门就去取号；大和牛釜饭最热门。'},
+ {n:'柿叶寿司',jp:'柿の葉ずし',k:'f_kakinoha',days:'D8 · 奈良',price:'1,200–2,000 円',
+  what:'鲭鱼寿司用柿叶包裹防腐——奈良/和歌山的乡土寿司，伴手礼常客。',
+  tip:'本店「平宗」在奈良町老街，可以顺路；味道偏咸配茶正好。'},
+ {n:'551 猪肉包',jp:'豚まん',k:'f_butaman',days:'D4 · D9 伴手礼',price:'270 円/2 个',
+  what:'大坂限定「551蓬莱」的猪肉包，肉馅带甜汁，是关西人送礼的硬通货。',
+  tip:'只有关西有卖（机场也有），现蒸的最好吃；回家送人买冷冻版。'},
+ {n:'黄油啤酒',jp:'バタービール',k:'f_butterbeer',days:'D2 · USJ',price:'700 円',
+  what:'哈利波特园区限定，无酒精的奶油甜饮，喝完杯子可以在周边店买纪念款。',
+  tip:'冬天也有热饮版；排 photo 点时顺手买，不用专门排队。'}
+];
+
+const FOODPOS={
+ f_oden:[135.5017,34.6687,'道顿堀'],
+ f_ramen:[135.5031,34.6701,'金龙拉面 道顿堀'],
+ f_izakaya:[135.5056,34.6667,'难波·居酒屋'],
+ f_konbini:[135.4981,34.6629,'便利店（各处）','D1'],
+ f_takoyaki:[135.5004,34.6694,'くくる 道顿堀本店'],
+ f_okonomiyaki:[135.4994,34.6692,'千房 大阪烧'],
+ f_kushikatsu:[135.5065,34.6532,'新世界·串炸'],
+ f_crab:[135.5017,34.6713,'蟹道乐 道顿堀本店'],
+ f_fugu:[135.5007,34.6695,'づぼらや 河豚'],
+ f_sushi:[135.4997,34.6651,'回转寿司（スシロー等）'],
+ f_kobebeef:[135.1933,34.6926,'Steak Land 三宫'],
+ f_nankinmachi:[135.1866,34.6864,'南京町中华街'],
+ f_purin:[135.1951,34.6911,'三宫·甜点店'],
+ f_ekiben:[135.4953,34.7024,'大阪站·駅弁屋 祭'],
+ f_yudofu:[135.7808,34.9968,'奥丹清水'],
+ f_matcha:[135.7797,34.9999,'二年坂·抹茶店'],
+ f_dango:[135.7793,35.0003,'二年坂·烤团子'],
+ f_unagi:[135.6722,35.0096,'岚山·廣川（要预约）'],
+ f_inarisushi:[135.7727,34.9671,'伏见稻荷参道'],
+ f_soba:[135.7756,35.0032,'东山·荞麦面'],
+ f_kamameshi:[135.8407,34.6849,'志津香 釜饭'],
+ f_kakinoha:[135.8257,34.6797,'平宗 奈良町'],
+ f_butaman:[135.4996,34.6632,'551蓬莱 难波'],
+ f_butterbeer:[135.4323,34.6658,'USJ 哈利波特园区']
+};
+
+const ARCH=[
+ {n:'天守阁',jp:'天守閣',k:'a_castle',type:'城 · 石垣与天守',days:'D4 · 大阪城',
+  what:'丰臣秀吉的大坂城是「日本三大城」之一，现在的天守是 1931 年复元版——钢筋混凝土，但石垣和护城河是真迹。',
+  tip:'看城先看「石垣的斜度曲线」和「巨大基石上的刻印」（大名们上贡的记号），再抬头看天守。',meta:'门票 600 円 · 大阪周游卡包含'},
+ {n:'悬空舞台',jp:'清水の舞台',k:'a_temple',type:'寺 · 木构',days:'D6 · 清水寺',
+  what:'139 根榉木柱在崖边搭出 13 米高的舞台，没用一颗钉子——「从清水舞台上跳下去」就是日语里的破釜沉舟。',
+  tip:'清晨 6 点开门，光线斜射进本堂最出片；侧面回廊能看清榉木结构。',meta:'门票 400 円'},
+ {n:'千本鸟居',jp:'千本鳥居',k:'a_shrine',type:'社 · 鸟居',days:'D7 · 伏见稻荷',
+  what:'上万座朱红鸟居排成隧道直上稻荷山，每一座都是企业或个人捐的「许愿门」。',
+  tip:'朱红是「生命的颜色」；走到四辻茶屋（半山）回望大坂湾，人少景开。',meta:'免费 · 建议 invert 晨去'},
+ {n:'城池与庭园',jp:'二条城',k:'a_nijo',type:'城 · 庭园',days:'D6 · 二条城',
+  what:'德川家康的京都行宫，「二の丸御殿」的莺声地板走上去会响（防刺客），唐门金雕是桃山美学巅峰。',
+  tip:'御殿内禁止拍照，但庭园可以慢慢逛；二の丸庭园是「书院式庭园」代表作。',meta:'门票 1,300 円（含御殿）'},
+ {n:'世界最大木构',jp:'東大寺大仏殿',k:'a_daibutsuden',type:'寺 · 木构',days:'D8 · 奈良',
+  what:'现大佛殿是 1709 年重建，规模仍为世界最大木构建筑之一——高 48 米，装着 15 米高的大佛。',
+  tip:'柱子上有「大佛鼻孔」洞，钻过去许愿（排队）；门口的奈良鹿会向你鞠躬讨鹿仙贝。',meta:'门票 800 円'},
+ {n:'凤凰堂',jp:'平等院鳳凰堂',k:'a_byodoin',type:'寺 · 贵族美学',days:'D8 · 宇治',
+  what:'1053 年藤原赖通建的白河时代建筑，堂顶一对金凤凰印在 10 日元硬币上——平安贵族的极乐世界想象。',
+  tip:'凤翔馆（博物馆）的凤凰原像值得看；宇治川对岸拍照角度最佳。',meta:'门票 600 円 · 凤凰堂内加 300'},
+ {n:'町家',jp:'京町家',k:'a_machiya',type:'家 · 町屋',days:'D6 · 二三年坂',
+  what:'「鳗鱼的睡床」——细长木造联排屋，前店后住，格子窗、坪庭、土间一应俱全。',
+  tip:'二三年坂两侧保留最完整的町家群；很多改造成了咖啡店，可以进院子看坪庭。',meta:'自由参观 · 部分店铺收费'},
+ {n:'异人馆',jp:'異人館',k:'a_ijinkan',type:'家 · 洋馆',days:'D3 · 神户北野',
+  what:'明治开港后外国人住在北野山坡上的西洋馆群，和风与洋风在一条坡道上并存。',
+  tip:'风见鸡馆（红砖尖顶）是地标；不用每馆都进，街景本身就很美。',meta:'各馆 500–1,000 円'},
+ {n:'摩天楼',jp:'あべのハルカス',k:'a_tower',type:'近现代 · 高塔',days:'D4 · 阿倍野',
+  what:'300 米、日本第一高楼，60 层观景台「Harukas 300」是无玻璃阻隔的全露天回廊。',
+  tip:'日落前 40 分钟上去，一次收下白天+日落+夜景三份票钱。',meta:'门票 2,000–2,500 円'},
+ {n:'车站建筑',jp:'京都駅',k:'a_station',type:'近现代 · 车站',days:'D5 · 京都',
+  what:'原广司设计的「山谷」——15 层高中庭、大阶梯 171 级、天空步道，把交通枢纽做成了城市客厅。',
+  tip:'大阶梯晚上有灯光秀；拉面小路、伊势丹百货、空中步道全在一栋楼里。',meta:'免费 · 空中步道直达'},
+ {n:'港湾构筑',jp:'港の建築',k:'a_port',type:'近现代 · 港湾',days:'D3 · D9',
+  what:'神户港塔（和鼓造型）与关西机场（伦佐·皮亚诺的 4 公里海上机翼）——两个时代的港城宣言。',
+  tip:'机场 T1 展望台看飞机起降；神户塔登塔不如港边拍塔。',meta:'神户塔 1,200 円 · 机场免费'},
+ {n:'通天阁',jp:'通天閣',k:'a_tsutenkaku',type:'近现代 · 高塔',days:'D4 · 新世界',
+  what:'1912 年仿凯旋门+埃菲尔铁塔建的「东方第一塔」，现在的二代目是 1956 年再建，比尔·肯比尔烤肉街的背景板。',
+  tip:'新世界的旧市井感和心斋桥完全两个世界，吃串炸顺路打卡即可。',meta:'登塔 900 円'},
+ {n:'戎桥',jp:'戎橋',k:'a_bridge',type:'近现代 · 桥',days:'D4 · 道顿堀',
+  what:'「去桥上打卡格力高」是来过大坂的证明——桥上的固力果跑男广告牌换了 6 代，桥没变。',
+  tip:'晚上 19:00 后人最多也最有气氛；桥心是最佳机位，小心手机。',meta:'免费'}
+];
+
+const TRAF=[
+ {n:'步行',jp:'あるき',k:'t_walk',days:'每天',price:'免费',
+  what:'京都东山线、大坂市区、奈良公园——这趟旅行的主力交通方式就是走路，一天 1.5–2.5 万步很正常。',
+  tip:'扶梯礼仪：大阪靠右站，京都/神户靠左站；别穿新鞋，石板坡+台阶很多。'},
+ {n:'IC 卡',jp:'ICOCA・Suica',k:'t_ic',days:'每天',price:'充值制',
+  what:'一张卡刷遍 JR、私铁、地铁、巴士和便利店。iPhone 直接在钱包 App 里开 Suica，安卓可买实体 ICOCA。',
+  tip:'安卓没有 Mobile Suica 的话，机场或车站绿色窗口买 ICOCA（押金 500 円可退）。'},
+ {n:'JR · 新快速',jp:'しんかいそく',k:'t_jr',days:'D3 · D5 · D7',price:'大阪→京都 580 円',
+  what:'关西城际神器：大阪↔京都 29 分、大阪↔三宫 20 分，不用指定席，来了就上。',
+  tip:'新快速只停大站（大阪/京都/神户/姬路方向），认准橙灰色涂装； Google 地图直接给站台。'},
+ {n:'私铁',jp:'してつ',k:'t_private',days:'D1 · D5 · D8',price:'180–620 円',
+  what:'关西私铁四强：南海（机场↔难波 45 分）、阪急（梅田↔河原町， Kyoto 观光主力）、京阪（京都↔宇治↔奈良）、近铁（京都↔奈良快车）。',
+  tip:'京都↔宇治走京阪「中书岛换乘」比 JR 绕路少；奈良近铁比 JR 离公园近。'},
+ {n:'地铁',jp:'ちかてつ',k:'t_metro',days:'D1 · D4',price:'190–380 円',
+  what:'大坂御堂筋线（梅田↔难波↔天王寺）是南北主轴，你的行程基本沿这条线；京都市营乌丸线+东西线够用。',
+  tip:'大坂地铁按距离计价，一天坐 3 次以上考虑「 Enjoy Eco 卡」周末 600 円一日。'},
+ {n:'巴士',jp:'バス',k:'t_bus',days:'D6 · D9',price:'京都一日券 700 円',
+  what:'京都市巴士覆盖所有寺社门口，后门上前门下；D9 的机场大巴在京都站八条口始发，直达关西机场。',
+  tip:'京都巴士一日券地铁站 tourist 信息亭有卖；机场大巴旺季提前一天买票。'},
+ {n:'出租车',jp:'タクシー',k:'t_taxi',days:'备选',price:'起步约 500 円',
+  what:'起步价覆盖约 1–2 公里，之后每 300 米左右跳表——贵，但 3–4 人分摊短途很划算。',
+  tip:'车门自动开合，不用自己拉； hotel 前台代叫最稳，路口巡游的可招手。'},
+ {n:'自行车',jp:'じてんしゃ',k:'t_bike',days:'D6 · D7 备选',price:'约 1,000 円/天',
+  what:'京都是平原+棋盘路，租辆「妈妈自行车」一天能串完东山+二条城，比巴士自由。',
+  tip:'民宿/租车行问是否含停车券；电车车站前乱停车会被拖走。'},
+ {n:'宅急便',jp:'たくきゅうびん',k:'t_luggage',days:'D5',price:'约 2,000 円/件',
+  what:'黑猫宅急便的酒店间行李寄送：早上交前台，下午到下一家酒店——移动日轻装上阵的标准答案。',
+  tip:'交寄时留好单号照片；液体和充电宝不能寄，贵重品随身。'}
+];
+const imgs = {"b_pokemon":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/PokemonCenterNagoya.jpg/960px-PokemonCenterNagoya.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","b_kiddy":"https://upload.wikimedia.org/wikipedia/commons/4/4f/Kiddy_Land_head_store_2006_Omotesando.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","b_omiyage":"https://upload.wikimedia.org/wikipedia/commons/2/2b/Souvenirs.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","b_uniqlo":"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Uniqlo_Shinsaibashisuji_Flag_ship_store_Interior_view_2014.jpg/960px-Uniqlo_Shinsaibashisuji_Flag_ship_store_Interior_view_2014.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","b_outlet":"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Rinku_premium_outlets01s3200.jpg/960px-Rinku_premium_outlets01s3200.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","b_daimaru":"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/DAIMARU_UMEDA_MISE.jpg/960px-DAIMARU_UMEDA_MISE.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","b_shinsaibashi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Shinsaibashi-suji_201408.JPG/960px-Shinsaibashi-suji_201408.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","s_nipponbashi":"https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Den_den_town%2C_osaka.JPG/960px-Den_den_town%2C_osaka.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","s_kamogawa":"https://upload.wikimedia.org/wikipedia/commons/0/0e/%E9%B4%A8%E5%B7%9D%E3%83%87%E3%83%AB%E3%82%BF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled","s_manga":"https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/%E4%BA%AC%E9%83%BD%E5%9B%BD%E9%9A%9B%E3%83%9E%E3%83%B3%E3%82%AC%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%A0.jpg/960px-%E4%BA%AC%E9%83%BD%E5%9B%BD%E9%9A%9B%E3%83%9E%E3%83%B3%E3%82%AC%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%A0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","j_luminarie":"https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/%E7%A5%9E%E6%88%B8%E3%83%AB%E3%83%9F%E3%83%8A%E3%83%AA%E3%82%A8_%288274109203%29.jpg/960px-%E7%A5%9E%E6%88%B8%E3%83%AB%E3%83%9F%E3%83%8A%E3%83%AA%E3%82%A8_%288274109203%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail","j_hanatouro":"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Arashiyama_Hanat%C5%8Dro%2C_Nison-in_%E5%B5%90%E5%B1%B1%E8%8A%B1%E7%81%AF%E8%B7%AF%E3%83%BB%E4%BA%8C%E5%B0%8A%E9%99%A2_%E7%B4%85%E8%91%89%E3%81%A8%E6%9C%88_DSCF5361.JPG/960px-Arashiyama_Hanat%C5%8Dro%2C_Nison-in_%E5%B5%90%E5%B1%B1%E8%8A%B1%E7%81%AF%E8%B7%AF%E3%83%BB%E4%BA%8C%E5%B0%8A%E9%99%A2_%E7%B4%85%E8%91%89%E3%81%A8%E6%9C%88_DSCF5361.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"};
+
+const BUY=[
+ {n:'退税流程',jp:'免税カウンター',k:'',type:'必读',days:'D4 · D5',where:'各商场退税柜台',price:'满 5,001 円免 10%',
+  what:'护照随身，同店同日满额即可办。退税商品会被密封袋封装，出境前不能拆开使用。',
+  tip:'退税排队高峰在 19 点后，上午买完人少；手续费有些商场会收 1.1%。'},
+ {n:'唐吉诃德',jp:'ドン・キホーテ',k:'b_donki',type:'综合杂货',days:'D1 · D4',where:'难波 24 小时店',price:'零食 300 円起',
+  what:'24 小时营业的杂货迷宫：零食、药妆、电器、cosplay 一层压一层，逛着逛着就出一手袋。',
+  tip:'楼层跳着逛；热门零食和药妆先在 OS Drug 比价，唐吉诃德贵 5–10%。'},
+ {n:'药妆店',jp:'ドラッグストア',k:'b_cosme',type:'药妆',days:'D4 · 心斋桥',price:'妆前乳 800–2,000 円',
+  what:'OS Drug 是关西本地性价比之王，@cosme store 集合全部榜单产品；妆前乳、面膜、眼药水是经典三件套。',
+  tip:'满 5,000 円出示护照退税；关注店铺的クーポン（优惠券）页面可以再叠 5–7%。'},
+ {n:'友都八喜',jp:'ヨドバシカメラ',k:'b_yodobashi',type:'电器城',days:'D4 · D5',where:'梅田店（JR大阪站直连）',price:'免税 10% off',
+  what:'电器+模型+玩具+随身药妆的巨型卖场，5 楼是任天堂/三丽鸥/宝可梦的「二次元一层楼」。',
+  tip:'大件（电饭煲、吹风机）记得问免税后「さらに値引き」；凭护照在 6 楼统一办退税。'},
+ {n:'bic camera',jp:'ビックカメラ',k:'b_bic',type:'电器城',days:'D4 · 难波',where:'难波店 7F',price:'免税 10% off',
+  what:'难波店 7 楼有面包超人专区，玩具层比友都八喜密度更高，适合顺路补货。',
+  tip:'和友都八喜互为竞品，同类商品价差不大，哪边顺路买哪边。'},
+ {n:'百货地下食品街',jp:'デパ地下',k:'b_depachika',type:'食品',days:'D4 · D5',where:'阪急梅田本店 B1',price:'1,000–3,000 円',
+  what:'和菓子、洋菓子、熟食的天堂；傍晚 18:00 后陆续贴折价签，是本地主妇的扫货时刻。',
+  tip:'阪急梅田 B1 是全关西最豪华的デパ地下；买当季限定做伴手礼不会错。'},
+ {n:'宝可梦中心',jp:'ポケモンセンター',k:'b_pokemon',type:'玩具 · 角色',days:'D5 · 大丸梅田 13F',price:'1,500 円起',
+  what:'宝可梦中心大阪店：限定 plush、关西限定款、卡牌补充包，一只皮卡丘抱回家。',
+  tip:'热门玩偶经常断货，开门时段去；免税在 13 楼内直接办。'},
+ {n:'kiddy land',jp:'キディランド',k:'b_kiddy',type:'玩具 · 角色',days:'D5 · 阪急三番街',price:'800 円起',
+  what:'三丽鸥、chiikawa paradise、姆明——北馆 B1 + 南馆 B1 两层开逛。',
+  tip:'可以先领优惠券；统一退税，小票留好。'},
+ {n:'伴手礼',jp:'おみやげ',k:'b_omiyage',type:'伴手礼',days:'D8 · D9',where:'宇治/机场',price:'800–2,500 円',
+  what:'三大件：抹茶夹心（伊藤久右卫门）、神户布丁、551 猪肉包；机场免税店的白色恋人等等全国款最后补。',
+  tip:'551 只有关西有，现蒸版在难波本店；冷冻版机场店也发。'},
+ {n:'基础服装三连',jp:'ユニクロ・無印・モンベル',k:'b_uniqlo',type:'服装',days:'D5 · 梅田/难波',price:'HeatTech 1,500 円起',
+  what:'优衣库买 HeatTech 御寒，MUJI 买收纳和鞋，montbell 补户外层——比国内便宜且款全。',
+  tip:'montbell 难波店可退税（行前再确认）；游客持护照统一办。'},
+ {n:'临空城奥莱',jp:'りんくうプレミアム・アウトレット',k:'b_outlet',type:'奥莱',days:'D9 · 返程日',where:'关西机场对岸',price:'3–7 折',
+  what:'BEAMS、运动户外、童装集中，行李额度内的最后一搏；关西机场隔一站电铁。',
+  tip:'先去服务台凭护照领「游客优惠册」再折上折；冬天室外逛街注意保暖。'},
+ {n:'大丸梅田',jp:'大丸梅田店',k:'b_daimaru',type:'百货 · 童装',days:'D5 · 梅田',price:'玩具 1,000 円起',
+  what:'10 楼是面包超人主题层+童装玩具集合，13 楼宝可梦中心——带娃和家长扫货的定点。',
+  tip:'与友都八喜、阪急三番街步行 3 分钟圈，一次逛完梅田三巨头。'}
+];
+
+const OTAKU=[
+ {n:'日本桥电电街',jp:'でんでんタウン',k:'s_nipponbashi',type:'圣地 · 街区',days:'D4 · 日本桥',where:'大阪「秋叶原」',price:'二手 500 円起',
+  what:'大坂的动漫电器街：中古模玩、老卡带、女仆咖啡店一条街，比秋叶原更有市井气。',
+  tip:'二手店（SOFT MAP 等）可以砍价；下午 3 点后店员开始整理货架最热闹。'},
+ {n:'kiddy land',jp:'キディランド',k:'b_kiddy',type:'圣地 · 玩具',days:'D5 · 阪急三番街',where:'三丽鸥/chiikawa',price:'800 円起',
+  what:'三丽鸥角色的天堂，chiikawa paradise 常年限定款补货点。',
+  tip:'chiikawa 面包店在同一商圈——先领 KLOOK 预约再去排 kiddy land。'},
+ {n:'chiikawa 面包店',jp:'ちいかわパン屋',k:'s_kitte',type:'圣地 · 主题店',days:'D5 · 梅田',where:'KLOOK 预约制',price:'800–2,000 円',
+  what:'吉伊卡哇主题面包房：小可爱面包+限定周边，入场需要预约时段。',
+  tip:'KLOOK 提前约（你表格里已标注）；预约时段迟到 15 分钟作废。'},
+ {n:'任天堂官方卖场',jp:'Nintendo',k:'s_yodobashi',type:'圣地 · 卖场',days:'D4 · D5 · 友都八喜 5F',where:'梅田',price:'周边 1,500 円起',
+  what:'友都八喜梅田店 5 楼的任天堂/三丽鸥/宝可梦专区密度极高，植物大战僵尸的大主题也在这里。',
+  tip:'限定主机周边先问免税柜台有没有「游客套装」。'},
+ {n:'大丸梅田角色层',jp:'大丸梅田店',k:'s_daimaru',type:'圣地 · 百货',days:'D5 · 梅田',where:'10F 童装玩具 · 13F 宝可梦',price:'1,000 円起',
+  what:'面包超人主题层（10F）和宝可梦中心（13F）上下呼应，童装玩具一次买齐。',
+  tip:'13 楼宝可梦中心有自己的抽选活动，进门先看公告。'},
+ {n:'鸭川三角洲',jp:'鴨川デルタ',k:'s_kamogawa',type:'圣地 · 动漫',days:'D7 · 圣诞夜',where:'出町柳',price:'免费',
+  what:'《声之形》的标志场景——三条河流交汇的 Y 形三角洲，京阿尼迷的巡礼终点。',
+  tip:'京阪出町柳站下车即到；傍晚光线路最接近动画构图。'},
+ {n:'宇治',jp:'うじ',k:'a_byodoin',type:'圣地 · 文学动漫',days:'D8 · 宇治',where:'源氏物语·吹响吧上低音号',price:'免费',
+  what:'《源氏物语》宇治十帖的舞台，也是京都动画《吹响吧！上低音号》的圣地——宇治桥、京阪宇治站都是取景地。',
+  tip:'駅前的「宇治音吼像」打卡；朝雾桥机位在平等院方向。'},
+ {n:'京都国际漫画博物馆',jp:'国際マンガミュージアム',k:'s_manga',type:'圣地 · 美术馆',days:'D7 · 机动日',where:'京都·乌丸丸太町',price:'1,200 円',
+  what:'小学校改造的博物馆，5 万册漫画墙可以躺着看；常设展讲漫画史，中国漫画也有专区。',
+  tip:'周三休馆；「机动日」天气不好时的最佳室内选项。'},
+ {n:'任天堂园区',jp:'スーパーニンテンドーワールド',k:'s_usj',type:'圣地 · 主题乐园',days:'D2 · USJ',where:'马里奥+咚奇刚新园区',price:'含门票 · 快通另购',
+  what:'真实尺度的蘑菇王国： coherent 能量手环收集金币，KEY 挑战刷全场。',
+  tip:'入园直奔马里奥赛道；手环现场买或提前官方渠道购。'}
+];
+
+const FEST=[
+ {n:'神户Harborland灯饰',jp:'ハーバーランド',k:'j_luminarie',type:'灯饰',days:'D3 · 12/21 神户',where:'Harborland/モザイク',price:'免费',
+  what:'注意：神户ルミナリエ 2026 年 12 月不办（第 32 回已定档 2027 年 1 月末）——但 Harborland 摩天轮+圣诞灯饰整个 12 月都在，海边夜景依旧是神户招牌。',
+  tip:'モザイク广场 17:00 后最好看；25 周年灯饰+游船（30 分钟）可选。'},
+ {n:'光之饗宴',jp:'光の饗宴',k:'j_hikari',type:'灯饰',days:'D1 – D4 · 大阪',where:'御堂筋/中之岛',price:'免费',
+  what:'御堂筋大道两侧 4 公里行道树同时亮灯，中之岛有光之艺术装置——你的 D1 落地夜刚好赶上。',
+  tip:'御堂筋段走路感受最佳；中之岛「光の文艺复兴」在市役所西侧。'},
+ {n:'岚山花灯路',jp:'嵐山花灯路',k:'j_hanatouro',type:'灯会',days:'D7 · 大概率错过',where:'岚山一带',price:'免费',
+  what:'12 月中旬的限定活动（近年多为 12/13–22 前后约 10 天）：竹林小径与渡月桥点起柔和夜灯。',
+  tip:'你 12/25 才到岚山方向——大概率已结束，别为它改行程；撞上算彩蛋。'},
+ {n:'圣诞市集',jp:'クリスマスマーケット',k:'j_xmas',type:'市集',days:'D4 · D5',where:'梅田/北野',price:'热红酒 800 円',
+  what:'德国风圣诞市集在大阪梅田、神户等地开张：木屋、热红酒、手工装饰，12/24 是气氛顶点。',
+  tip:'梅田新梅田_city 和北野的市集最出名；杯子要押金，喝完退杯或留作纪念。'},
+ {n:'永观堂枫叶尾声',jp:'永観堂',k:'j_koyo',type:'红叶',days:'D6 · 午后',where:'南禅寺旁',price:'1,000 円',
+  what:'「枫叶永观堂」——京都红叶第一名的寺，12 月上旬还有尾声期的静枫，人比 11 月少太多。',
+  tip:'你 D6 下午的路线可以把它排在哲学之道之后； late 枫叶配青苔更好拍。'},
+ {n:'雪妆金阁寺',jp:'雪の金閣寺',k:'j_snow',type:'初雪',days:'D7 · 看运气',where:'金阁寺',price:'含门票',
+  what:'12 月京都偶有初雪，「雪化妆」的金阁是全京都最难预约的画面——遇上就是年度运气 top。',
+  tip:'下雪的早晨刷官网/X 的实时照片；前夜下雪，当天开门即去。'}
+];
+
+const ETIQ=[
+ {n:'拍照礼仪',jp:'撮影マナー',k:'',days:'D6 · D7 · 全程',price:'',
+  what:'寺社本堂内部多禁止拍照；祇园的艺伎/舞伎是「职业工作者」不是景点，追拍会被罚 1 万日元。',
+  tip:'看到「撮影禁止」直接收相机；拍路人正脸先点头示意。'},
+ {n:'脱鞋文化',jp:'靴を脱ぐ',k:'',days:'全程 · 商店/餐厅/试衣间',price:'',
+  what:'进榻榻米房间、试衣间、部分餐厅都要脱鞋；玄关处鞋尖要朝外摆整齐。',
+  tip:'袜子保持无破洞；鞋带选一脚蹬，一天脱十几次就懂了。'},
+ {n:'电车静音',jp:'車内マナー',k:'r_manner',days:'全程 · 电车',price:'',
+  what:'车厢内不通电话、音乐不外放、背包前背；优先席附近要求手机关机或静音。',
+  tip:'行李箱放在行李架或自己腿边，不要占过道；JR 站台「待合线」内排队。'},
+ {n:'垃圾随身',jp:'ゴミ持ち帰り',k:'',days:'全程',price:'',
+  what:'街头几乎没有垃圾桶，垃圾分类极细（燃える/プラスチック/缶瓶）——垃圾装袋带回酒店分投。',
+  tip:'便利店买的食物在店门口吃完，垃圾交给店员最省心。'},
+ {n:'小费文化',jp:'チップ',k:'',days:'全程',price:'不需要',
+  what:'日本没有小费制度——给了反而让对方困惑甚至追出来还钱。',
+  tip:'感谢用语言和鞠躬表达；居酒屋的「お通し」是小菜费不是小费。'},
+ {n:'温泉钱汤',jp:'温泉マナー',k:'',days:'备选 · 空庭温泉',price:'大阪空庭 2,700 円',
+  what:'先冲澡再入池，毛巾不入水；纹身需要确认（可以贴遮瑕贴），长发要盘起。',
+  tip:'大阪湾边的「空庭温泉」是大阪市区最大温泉主题设施，D2/D4 晚备选。'},
+ {n:'优先席',jp:'優先席',k:'',days:'全程 · 电车',price:'',
+  what:'优先席附近手机要关机或静音（避免干扰心脏起搏器），年轻人主动让座是共识。',
+  tip:'不需要大声让座，起身让开就是；优先席旁不要久站挡门。'},
+ {n:'地震应急',jp:'地震対策',k:'',days:'全程',price:'',
+  what:'摇晃时先护头蹲下躲桌下；手机开启 J-Alert/JNTO 防灾通知；紧急电话 110（警察）/119（急救火灾）。',
+  tip:'酒店门口看一眼避难路线图；随身带一张写有酒店名和地址的卡片。'},
+ {n:'生病就医',jp:'病院',k:'',days:'全程',price:'诊费 3,000–10,000 円',
+  what:'轻症（感冒、擦伤）先去药妆店；需要就医拨 119 或让酒店前台联系「救急病院」。',
+  tip:'出发前买好旅行险；大医院有「外国人受付」窗口，护照随身。'},
+ {n:'排队文化',jp:'行列',k:'',days:'全程',price:'',
+  what:'排队是日本社会的默认设置：站进队伍尾端自动接龙，插队是最大禁忌。',
+  tip:'热门拉面店在门口的预约机/名单上写名字；人多的店门口排队线要贴着前一个人的脚后跟。'}
+];
+
+const PREP=[
+ {n:'日本签证',jp:'签',k:'',days:'提前 1 个月',price:'300–400 元',
+  what:'单次旅游电子签，淘宝/携程/飞猪代办 3–7 个工作日出签；12 月是旺季，留足时间。',
+  tip:'出签后把电子签 PDF 打印一份随身，值机可能查。'},
+ {n:'往返机票',jp:'机票',k:'',days:'提前 1 个月',price:'2,000–3,500 元',
+  what:'上海⇄大阪 12/19 去 12/27 回；12 月中下旬票价走高，出签后立刻锁票。',
+  tip:'对比直飞（2.5h）和含税总价；留意行李额度，购物多的话买单件加购。'},
+ {n:'USJ 票券',jp:'券',k:'',days:'提前 1 个月',price:'门票+快通 1,200 元起',
+  what:'12/20 是周日，Express Pass 越晚越贵甚至售罄——官网或 KLOOK 现在下单。',
+  tip:'快通买 4 号或 7 号套餐（覆盖马里奥+哈利波特）；门票扫码入园，截图备份。'},
+ {n:'酒店确认',jp:'宿',k:'',days:'提前 1 个月',price:'已订',
+  what:'大阪 4 晚（12/19–23）+ 京都八条口 4 晚（12/23–27），确认订单号和入住人姓名拼写。',
+  tip:'京都站酒店就在机场大巴始发点——D9 早上多睡半小时全靠它。'},
+ {n:'eSIM / 电话卡',jp:'网',k:'',days:'提前 2 周',price:'30–60 元',
+  what:'Ubigi/Airalo 8 天 3–10GB 足够导航+社交；落地开关飞行模式即生效，不用换卡。',
+  tip:'国内提前装好并激活测试；双卡手机保留国内号收验证码。'},
+ {n:'chiikawa 面包店预约',jp:'约',k:'',days:'提前 2 周',price:'KLOOK',
+  what:'D5 梅田的 chiikawa 面包店需要 KLOOK 预约时段——你表格里专门标注过的那家。',
+  tip:'预约时段迟到作废；把预约二维码截图存相册。'},
+ {n:'平安夜餐厅订位',jp:'席',k:'',days:'提前 2 周',price:'—',
+  what:'12/24 在京都：怀石、寿喜烧类老铺圣诞夜基本满席，Tabelog 看到心仪的就打电话或官网预约。',
+  tip:'日语不通就拜托酒店前台代订；订不到就吃 Kyoto 拉面小路，也是好体验。'},
+ {n:'机场大巴票',jp:'巴',k:'',days:'提前 2 周',price:'2,600 円/人',
+  what:'D9 京都站八条口→关西机场，你小红书收藏的保姆级攻略照做即可。',
+  tip:'提前一天在便利店或网上购票锁座；班次时刻拍个截图。'},
+ {n:'现金兑换',jp:'円',k:'',days:'提前 3 天',price:'2–3 万日元',
+  what:'两人 8 天 2–3 万日元现金足够（小额店/神社/自动贩卖机）；大额消费都能刷卡扫码。',
+  tip:'银行 APP 预约外币现钞；到日本后 7-11 ATM 银联直取是兜底方案。'},
+ {n:'APP 安装',jp:'APP',k:'',days:'提前 3 天',price:'免费',
+  what:'五个必装：USJ 官方（排队/整理券）、KLOOK（票券）、Google Maps（下载关西离线地图）、Google 翻译（下载离线包）、NAVITIME（换乘）。',
+  tip:'Google 全家在国内用不了——出境当天自动恢复，别在国内测试后慌张。'},
+ {n:'插头与电压',jp:'プラグ',k:'',days:'提前 3 天',price:'0 元',
+  what:'日本是两脚扁插 100V——国内两脚扁插电器直接用，三脚圆插需要转换头。',
+  tip:'吹风机/卷发棒确认支持 100V；大功率电器不带为妙。'},
+ {n:'行李打包',jp:'荷造り',k:'',days:'提前 3 天',price:'—',
+  what:'羽绒服+毛衣+HeatTech 三层穿法；一双走一天不累的鞋是这趟旅行最重要的装备。',
+  tip:'留 1/3 箱子空间给购物；带折叠伞（12 月关西说下就下）。'},
+ {n:'手机空间清理',jp:'容量',k:'',days:'提前 3 天',price:'0 元',
+  what:'8 天的拍拍拍+视频，出发前清出 50GB 以上；下载好离线地图和翻译包占的空间另算。',
+  tip:'开启「自动上传后删除」；带一张备用的 microSD 也行。'},
+ {n:'护照随身',jp:'旅券',k:'',days:'出发当天',price:'—',
+  what:'护照+签证打印件放随身包最内层——退税、入住、办卡全靠它，丢了就全剧终。',
+  tip:'拍照存云端一份；随身包选有防盗内袋的。'},
+ {n:'充电宝',jp:'モバイルバッテリー',k:'',days:'出发当天',price:'—',
+  what:'≤20,000mAh（74Wh 以内）才能随身登机，禁止托运；一天在外的导航耗电大户。',
+  tip:'带好自带的短线；日本便利店也有卖，但临时买贵。'},
+ {n:'值机与安检',jp:'チェックイン',k:'',days:'出发当天',price:'—',
+  what:'提前 3 小时到机场；充电宝、护照、现金随身；超过 100ml 液体放托运。',
+  tip:'线上值机选靠左窗（飞大阪去程富士山在右侧，回程看富士山选左侧）。'},
+ {n:'预算速览',jp:'予算',k:'',days:'人均参考',price:'8,500–13,500 元',
+  what:'机票 2,000–3,500 + 住宿分摊 2,500–4,000 + 餐饮 2,000–2,500 + 交通 500–800 + 购物弹性 1,000–3,000。',
+  tip:'先把大件（机票酒店票券）锁定，剩下的购物额度就是心态问题。'}
+];
+
+Object.assign(GIMG, imgs);
+
+/* 吃的子类：具体店家（含坐标，可跳地图） */
+const SHOPPOS={
+ f_oden:[{n:'たこ梅',note:'难波 180 年关东煮老铺，鲸鱼料理也有',lon:135.5006,lat:34.6649},
+         {n:'7-11 关东煮',note:'冬天 17:00 后上新，自取结账'}],
+ f_ramen:[{n:'金龙拉面',note:'道顿堀 24 小时，酱油系',lon:135.5031,lat:34.6701},
+          {n:'本家 第一旭 たかばし',note:'京都站旁，烧豚拉面名门',lon:135.7665,lat:34.9930},
+          {n:'新福菜馆',note:'第一旭对面，浓厚鸡油系',lon:135.7661,lat:34.9928}],
+ f_izakaya:[{n:'目利きの银次',note:'难波/梅田连锁，海鲜串烧可靠',lon:135.5002,lat:34.6647}],
+ f_takoyaki:[{n:'くくる 道顿堀本店',note:'章鱼烧代名词，可取预约券',lon:135.5004,lat:34.6694},
+             {n:'十八番',note:'法善寺横丁内，配红姜天妇罗',lon:135.5018,lat:34.6679},
+             {n:'わなか',note:'难波本地人排队店',lon:135.4993,lat:34.6677}],
+ f_okonomiyaki:[{n:'千房 道顿堀本店',note:'铁板表演+现煎，楼层大适合组队',lon:135.4994,lat:34.6692},
+                {n:'きじ',note:'新世界元祖，山椒味道最强',lon:135.5062,lat:34.6534},
+                {n:'鹤桥风月',note:'连锁稳妥，鹤桥本店总店',lon:135.5258,lat:34.6640}],
+ f_kushikatsu:[{n:'だるま',note:'串炸元祖，酱汁只能蘸一次',lon:135.5069,lat:34.6527},
+               {n:'八重胜',note:'新世界老铺，本地人排队',lon:135.5065,lat:34.6533}],
+ f_crab:[{n:'蟹道乐 道顿堀本店',note:'会动的大螃蟹招牌，午市便宜三成',lon:135.5017,lat:34.6713}],
+ f_fugu:[{n:'づぼらや 道顿堀',note:'河豚火锅连锁，冬天应季',lon:135.5007,lat:34.6695}],
+ f_sushi:[{n:'スシロー',note:'APP 取号免排队',lon:135.4997,lat:34.6651},
+          {n:'くら寿司',note:'先买后吃的回转，gamification 强',lon:135.4970,lat:34.6640}],
+ f_kobebeef:[{n:'Steak Land 三宫',note:'穷游传说，午市套餐 3000 円起',lon:135.1933,lat:34.6926},
+             {n:'モーリヤ 三宫本店',note:'A5 正席之选，提前一周订',lon:135.1910,lat:34.6907}],
+ f_nankinmachi:[{n:'老祥记',note:'猪肉包元祖，1915 年创业',lon:135.1869,lat:34.6867}],
+ f_ekiben:[{n:'駅弁屋 祭',note:'大阪站内，几十种当天可选',lon:135.4953,lat:34.7024},
+           {n:'京都叶 匠庵',note:'京都站内，京野菜便当',lon:135.7618,lat:34.9858}],
+ f_yudofu:[{n:'奥丹清水',note:'只做汤豆腐一百年，有庭院座',lon:135.7808,lat:34.9968},
+           {n:'顺正',note:'南禅寺旁，豆腐皮现捞',lon:135.7939,lat:35.0123}],
+ f_matcha:[{n:'伊藤久右卫门',note:'宇治本店/平等院店，伴手礼齐全',lon:135.8085,lat:34.8872},
+           {n:'中村藤吉 本店',note:'宇治，生茶果冻必点',lon:135.8076,lat:34.8858}],
+ f_unagi:[{n:'廣川',note:'岚山，米其林一星，提前预约',lon:135.6722,lat:35.0096},
+          {n:'うおまさ',note:'祇园，现杀现烤名店',lon:135.7745,lat:35.0040}],
+ f_kamameshi:[{n:'志津香 公园前店',note:'开门取号，大和牛釜饭',lon:135.8407,lat:34.6849}],
+ f_kakinoha:[{n:'平宗',note:'奈良町老铺，柿叶寿司代名词',lon:135.8257,lat:34.6797}],
+ f_butaman:[{n:'551蓬莱 难波本店',note:'现蒸最好吃，机场有冷冻版',lon:135.4996,lat:34.6632}]
+};
+
+
+
+function posLink(e){
+  const pos=FOODPOS[e.k];if(!pos)return'';
+  const pd=pos[3]||((e.days.match(/D\d+/)||[])[0]||'');
+  return `<a class="cmap" href="japan-real-map.html#day=${pd}&lon=${pos[0]}&lat=${pos[1]}&spot=${encodeURIComponent(pos[2])}" target="_blank">在地图上查看 ↗</a>`;
+}
+function shopsHtml(e){
+  const shops=SHOPPOS[e.k];if(!shops||!shops.length)return'';
+  const pd=(e.days.match(/D\d+/)||[])[0]||'';
+  return `<div class="shops"><div class="shops-t">推荐店家</div><ul>${shops.map(s=>{
+    const lnk=s.lon?`<a target="_blank" href="japan-real-map.html#day=${pd}&lon=${s.lon}&lat=${s.lat}&spot=${encodeURIComponent(s.n)}">地图</a>`:'';
+    return `<li><b>${s.n}</b><span class="snote">${s.note}</span>${lnk}</li>`;
+  }).join('')}</ul></div>`;
+}
+function gcard(e,tab){
+const img=GIMG[e.k]?`<img src="${GIMG[e.k]}" loading="lazy" alt="${e.n}">`
+    :`<div class="ph serif">${(e.jp||e.n).slice(0,5)}</div>`;
+  return `<div class="card" data-tab="${tab}" data-key="${e.k||e.n}">${img}
+    <button class="stamp" title="标记为已打卡"></button><div class="cbody">
+    <span class="cdays">${e.days}</span>
+    <div class="cname">${e.n}<span class="cjp">${e.jp}</span></div>
+    ${e.type?`<div style="margin-top:9px"><span class="ctype">${e.type}</span></div>`:''}
+    <div class="cwhat">${e.what}</div>
+    <div class="cmeta">价位 <b>${e.price}</b> · ${e.days.includes('·')?e.days.split(' · ').slice(1).join(' · '):e.days}</div>
+    <div class="ctip">${e.tip}</div>
+    ${shopsHtml(e)}
+    ${posLink(e)}
+  </div></div>`;
+}
+const dayKey=e=>{ if(/每天/.test(e.days))return 0; const m=e.days.match(/D(\d+)/); return m?+m[1]:99; };
+[PREP,FOOD,ARCH,TRAF,BUY,OTAKU,FEST,ETIQ].forEach(a=>a.sort((x,y)=>dayKey(x)-dayKey(y)));
+document.getElementById('grid-prep').innerHTML=PREP.map(e=>gcard(e,'prep')).join('');
+document.getElementById('grid-food').innerHTML=FOOD.map(e=>gcard(e,'food')).join('');
+document.getElementById('grid-arch').innerHTML=ARCH.map(e=>gcard(e,'arch')).join('');
+document.getElementById('grid-traffic').innerHTML=TRAF.map(e=>gcard(e,'traffic')).join('');
+document.getElementById('grid-buy').innerHTML=BUY.map(e=>gcard(e,'buy')).join('');
+document.getElementById('grid-otaku').innerHTML=OTAKU.map(e=>gcard(e,'otaku')).join('');
+document.getElementById('grid-festival').innerHTML=FEST.map(e=>gcard(e,'festival')).join('');
+document.getElementById('grid-etiquette').innerHTML=ETIQ.map(e=>gcard(e,'etiquette')).join('');
+
+const TABS=['prep','food','arch','traffic','buy','otaku','festival','etiquette'];
+function showTab(t){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  TABS.forEach(x=>document.getElementById('tab-'+x).hidden=(x!==t));
+  history.replaceState(null,'','#'+t);
+  window.scrollTo({top:0});
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+const h=(location.hash||'#prep').replace('#','');
+showTab(TABS.includes(h)?h:'prep');
+
+/* ================= 打卡系统 ================= */
+const CKKEY='jp-checkin-v1';
+let CK={};try{CK=JSON.parse(localStorage.getItem(CKKEY)||'{}')}catch(e){CK={}}
+function ckSave(){try{localStorage.setItem(CKKEY,JSON.stringify(CK))}catch(e){}}
+function updateProg(){
+  const tot={prep:PREP.length,food:FOOD.length,arch:ARCH.length,traffic:TRAF.length,buy:BUY.length,otaku:OTAKU.length,festival:FEST.length,etiquette:ETIQ.length};
+  let done=0,total=0;
+  TABS.forEach(t=>{
+    const c=Object.keys(CK[t]||{}).length;done+=c;total+=tot[t];
+    const i=document.querySelector('.tabs button[data-tab="'+t+'"] i');
+    if(i)i.textContent=c+'/'+tot[t];
+  });
+  document.getElementById('progtext').textContent='打卡进度 '+done+' / '+total;
+  document.getElementById('progfill').style.width=(total?Math.round(done/total*100):0)+'%';
+}
+function applyDone(){
+  document.querySelectorAll('.card[data-tab]').forEach(c=>{
+    c.classList.toggle('done',!!(CK[c.dataset.tab]&&CK[c.dataset.tab][c.dataset.key]));
+  });
+  updateProg();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.stamp');if(!b)return;
+  const c=b.closest('.card');const tab=c.dataset.tab,key=c.dataset.key;
+  CK[tab]=CK[tab]||{};
+  if(CK[tab][key])delete CK[tab][key];else CK[tab][key]=Date.now();
+  ckSave();applyDone();
+});
+const progreset=document.getElementById('progreset');
+let ckArmed=false,ckArmT=null;
+progreset.addEventListener('click',()=>{
+  if(!ckArmed){
+    ckArmed=true;progreset.textContent='再点一次清空全部打卡';progreset.style.color='var(--accent)';
+    ckArmT=setTimeout(()=>{ckArmed=false;progreset.textContent='重置打卡';progreset.style.color='';},2500);
+    return;
+  }
+  clearTimeout(ckArmT);ckArmed=false;progreset.textContent='重置打卡';progreset.style.color='';
+  CK={};ckSave();applyDone();
+});
+applyDone();
+</script>
+</body>
+</html>
