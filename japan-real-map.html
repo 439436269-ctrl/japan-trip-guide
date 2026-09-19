@@ -134,12 +134,12 @@
           color:#8E8571;letter-spacing:.1em;z-index:9;background:rgba(244,239,230,.7);
           border-radius:8px;padding:2px 10px}
   .maplibregl-ctrl-attrib{font-size:10px!important}
-  /* 比例尺：米纸配色，抬到行程开关上方 */
-  .maplibregl-ctrl-bottom-right{bottom:78px;right:24px}
-  .maplibregl-ctrl-scale{background:rgba(244,239,230,.92);border:1px solid var(--line);border-top:none;
+  /* 比例尺：米纸配色，位于标题卡下方（右上/右下都有其它 UI） */
+  .maplibregl-ctrl-top-left{left:36px;top:212px}
+  .maplibregl-ctrl-scale{background:rgba(244,239,230,.92);border:1px solid var(--line);
     color:var(--ink);font-size:10.5px;font-family:inherit;letter-spacing:.06em;
-    padding:1px 7px 3px;border-radius:0 0 6px 6px;box-shadow:0 2px 8px rgba(70,58,36,.08)}
-  @media (max-width:760px){.maplibregl-ctrl-bottom-right{bottom:64px;right:14px}}
+    padding:3px 8px;border-radius:8px;box-shadow:0 2px 8px rgba(70,58,36,.08)}
+  @media (max-width:760px){.maplibregl-ctrl-top-left{left:20px;top:170px}}
 @media (max-width:760px){
     #hd h1{font-size:24px}
     #card{top:auto;bottom:110px;left:12px;right:12px;width:auto;max-height:44vh;transform:translateY(160%)}
@@ -348,7 +348,10 @@ const map = new maplibregl.Map({
 window.__map = map;
 
 /* 比例尺：公制，随缩放自动换算 */
-map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'bottom-right');
+map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: 'metric' }), 'top-left');
+/* 跟随标题卡高度自动定位，避免与任何底部 UI 打架 */
+function placeScale(){ const hd=document.getElementById('hd'); const el=document.querySelector('.maplibregl-ctrl-top-left'); if(!hd||!el)return; el.style.top=Math.round(hd.getBoundingClientRect().bottom+12)+'px'; }
+setTimeout(placeScale,400); setTimeout(placeScale,1600); window.addEventListener('resize',placeScale);
 map.on('error', e => console.warn('map error:', (e && e.error && e.error.message) || e));
 
 /* ================= 叠加层与区域统计 ================= */
