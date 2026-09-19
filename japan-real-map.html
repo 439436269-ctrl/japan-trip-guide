@@ -168,6 +168,22 @@
   #foodBody .en{margin:3px 0 7px}
   #foodBody .tg{margin-bottom:6px}
   #card.food{max-height:calc(100vh - 96px);padding:18px 20px 16px}
+
+  /* 日卡一屏化：动线胶囊 + 段落折叠 */
+  #dayBody .stops{display:flex;flex-wrap:wrap;gap:5px;list-style:none;margin:3px 0 0;padding:0}
+  #dayBody .stops li,#dayBody .stops li::before{all:unset}
+  #dayBody .stopchip{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#4E463A;
+    background:#F7F1E4;border:1px solid #E7DCC8;border-radius:99px;padding:3px 9px;cursor:pointer;transition:all .15s}
+  #dayBody .stopchip b{color:var(--accent);font-weight:700}
+  #dayBody .stopchip:hover{border-color:var(--accent);background:#FBF6EA}
+  #dayBody details.sec{margin-top:8px;border-top:1px dashed #EEE5D3;padding-top:6px}
+  #dayBody details.sec>summary{cursor:pointer;list-style:none;font-size:11px;color:var(--accent);
+    letter-spacing:.14em;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  #dayBody details.sec>summary::-webkit-details-marker{display:none}
+  #dayBody details.sec>summary .cnt{color:#B9AE99;font-weight:400;letter-spacing:.06em}
+  #dayBody details.sec>summary::after{content:'＋';color:#B9AE99;font-size:11px}
+  #dayBody details.sec[open]>summary::after{content:'－'}
+  #dayBody details.sec .secbody{padding-top:5px}
 </style>
 </head>
 <body>
@@ -628,14 +644,15 @@ function fillDayCard(d){
     <h2 class="serif">${dd.title}</h2>
     ${imgHtml?`<div class="imgs">${imgHtml}</div>`:''}
     <p class="desc" style="margin-top:10px">${dd.sum}</p>
-    ${stops.length?`<div class="sec"><div class="sec-t">当日动线 · ${stops.length} 站</div><ol class="stops">${stops.map((s,i)=>`
-      <li data-i="${i}" data-n="${i+1}"><b>${s.n}</b>${s.note?`<span class="snote">${s.note}</span>`:''}</li>`).join('')}</ol></div>`:''}
-    ${dd.secs.map(s=>`
-      <div class="sec">
-        <div class="sec-t">${s.c} · ${s.t}</div>
+        ${stops.length?`<div class="sec"><div class="sec-t">当日动线 · ${stops.length} 站</div><div class="stops">${stops.map((s,i)=>`<span class="stopchip" data-i="${i}"><b>${i+1}</b>${s.n}</span>`).join('')}</div></div>`:''}
+    ${dd.secs.map((s,i)=>`
+      <details class="sec"${(i===0&&(s.links||[]).length<=3)?' open':''}>
+        <summary><span>${s.c} · ${s.t}</span><span class="cnt">${(s.items||[]).length} 条</span></summary>
+        <div class="secbody">
         ${s.items&&s.items.length?`<ul>${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>`:''}
         ${s.links&&s.links.length?`<div class="lnks">${s.links.map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${l.t} ↗</a>`).join('')}</div>`:''}
-      </div>`).join('')}
+        </div>
+      </details>`).join('')}
   `;
 }
 function selectDay(d){
@@ -754,7 +771,7 @@ document.getElementById('cardX').addEventListener('click',()=>{
   } else deselect();
 });
 dayBody.addEventListener('click',e=>{
-  const li=e.target.closest('li[data-i]');if(!li||!dayOpen)return;
+  const li=e.target.closest('.stopchip[data-i]');if(!li||!dayOpen)return;
   const st=(DAYSTOPS[dayOpen]||[])[+li.dataset.i];if(!st)return;
   showStopPopup(st.lon,st.lat,st.n,st.note);
   map.flyTo({center:[st.lon,st.lat],zoom:14,pitch:60,bearing:-14,duration:1200,essential:true});
